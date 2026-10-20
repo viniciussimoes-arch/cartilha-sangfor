@@ -4,6 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Cartilha Comercial Sangfor — Guia de Vendas</title>
+<meta name="theme-color" content="#1573c4" />
+<meta name="description" content="Guia de vendas interativo para o time comercial Sangfor." />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icon-192.png" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -29,6 +33,7 @@
     <span class="tag">Cartilha Comercial</span>
   </div>
   <input id="search" type="search" placeholder="Buscar produto, dor, objeção ou concorrente..." />
+  <button id="install" title="Instalar como aplicativo" aria-label="Instalar app" hidden>📲 Instalar</button>
   <button id="pdf" title="Exportar/Imprimir esta aba em PDF" aria-label="Exportar PDF">📄 PDF</button>
   <button id="present" title="Modo apresentação (tela cheia)" aria-label="Modo apresentação">🖥️</button>
   <button id="theme" title="Alternar modo claro/escuro" aria-label="Alternar tema">🌙</button>
@@ -57,5 +62,15 @@
 
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script>
+  /* Registra o service worker para funcionar offline (PWA).
+     Só funciona quando a cartilha está hospedada em HTTPS (ex: GitHub Pages).
+     Aberto direto do arquivo (file://) ele é ignorado sem erro. */
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }
+</script>
 </body>
 </html>

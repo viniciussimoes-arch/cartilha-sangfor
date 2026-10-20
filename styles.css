@@ -304,10 +304,24 @@ body.present .copybtn{display:none}   /* esconde botões de copiar ao apresentar
 .bc-meta .t{background:var(--bg2)}
 td.win{color:var(--green);font-weight:600}
 body.dark td.win{color:#5ddfa0}
-#pdf{
+#pdf,#install{
   border:1px solid var(--line);background:var(--card);color:var(--ink);
   height:42px;padding:0 13px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:700;transition:.2s;
 }
+#install{
+  border-color:transparent;color:#fff;
+  background:linear-gradient(135deg,var(--brand),var(--accent));background-size:200% 200%;
+  animation:gradShift 6s ease infinite;box-shadow:0 4px 14px rgba(21,115,196,.4);
+}
+#install:hover{transform:translateY(-2px)}
+/* Banner de status offline */
+#netstatus{
+  position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);
+  background:#0d4e8a;color:#fff;padding:10px 18px;border-radius:999px;
+  font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);z-index:300;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:92vw;text-align:center;
+}
+#netstatus.show{transform:translate(-50%,0)}
 #pdf:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
 
 /* ====================== EFEITOS "WOW" ====================== */
@@ -372,7 +386,7 @@ body.dark td.win{color:#5ddfa0}
 /* ---------- IMPRESSÃO / EXPORTAR PDF ---------- */
 @media print{
   @page{ margin:14mm; }
-  .topbar,.tabs,.foot,.copybtn,#search,#theme,#present,#pdf,.cta,.opts,.hero .blob,#bg,#confetti,#splash{ display:none!important; }
+  .topbar,.tabs,.foot,.copybtn,#search,#theme,#present,#pdf,#install,#netstatus,.cta,.opts,.hero .blob,#bg,#confetti,#splash{ display:none!important; }
   .reveal{opacity:1!important;transform:none!important}
   body{ background:#fff!important; color:#000!important; }
   body.dark{ --ink:#000; --muted:#333; --card:#fff; --line:#ccc; --bg:#fff; --bg2:#f2f2f2; }

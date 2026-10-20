@@ -670,6 +670,44 @@ document.addEventListener("fullscreenchange", ()=>{
   }
 });
 
+/* ---------- PWA: botão "Instalar app" ---------- */
+const installBtn = document.getElementById("install");
+let deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if(installBtn) installBtn.hidden = false;
+});
+if(installBtn){
+  installBtn.addEventListener("click", async ()=>{
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBtn.hidden = true;
+  });
+}
+window.addEventListener("appinstalled", ()=>{ if(installBtn) installBtn.hidden = true; });
+
+/* ---------- Indicador de status offline/online ---------- */
+function atualizarStatusRede(){
+  let tag = document.getElementById("netstatus");
+  if(!navigator.onLine){
+    if(!tag){
+      tag = document.createElement("div");
+      tag.id = "netstatus";
+      tag.innerHTML = "📴 Você está offline — a cartilha continua funcionando normalmente.";
+      document.body.appendChild(tag);
+    }
+    tag.classList.add("show");
+  } else if(tag){
+    tag.classList.remove("show");
+  }
+}
+window.addEventListener("online", atualizarStatusRede);
+window.addEventListener("offline", atualizarStatusRede);
+atualizarStatusRede();
+
 /* ---------- Tela de abertura (splash) ---------- */
 (function splash(){
   const el = document.getElementById("splash");
