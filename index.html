@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cartilha Comercial Sangfor — Guia de Vendas</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">SANGFOR</span>
+    <span class="tag">Cartilha Comercial</span>
+  </div>
+  <input id="search" type="search" placeholder="Buscar produto, dor, objeção ou concorrente..." />
+  <button id="pdf" title="Exportar/Imprimir esta aba em PDF" aria-label="Exportar PDF">📄 PDF</button>
+  <button id="present" title="Modo apresentação (tela cheia)" aria-label="Modo apresentação">🖥️</button>
+  <button id="theme" title="Alternar modo claro/escuro" aria-label="Alternar tema">🌙</button>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-view="inicio">🏠 Início</button>
+  <button class="tab" data-view="recomendador">🎯 Recomendador</button>
+  <button class="tab" data-view="produtos">📦 Produtos</button>
+  <button class="tab" data-view="catalogo">🧰 Catálogo (Modelos)</button>
+  <button class="tab" data-view="dores">💢 Dores → Solução</button>
+  <button class="tab" data-view="troca">🔄 Trocar p/ Sangfor</button>
+  <button class="tab" data-view="objecoes">🛡️ Objeções</button>
+  <button class="tab" data-view="battlecards">⚔️ Battlecards</button>
+  <button class="tab" data-view="pitch">🎤 Pitch Rápido</button>
+  <button class="tab" data-view="casos">🏆 Casos de Sucesso</button>
+  <button class="tab" data-view="diferenciais">⭐ Diferenciais</button>
+</nav>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <p>Cartilha interna de pré-vendas · Baseada em material público da Sangfor · Para o time comercial</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,533 @@
+/* =========================================================================
+   CARTILHA COMERCIAL SANGFOR — BASE DE CONTEÚDO
+   Edite este arquivo para atualizar produtos, dores, objeções e trocas.
+   Feito para o time comercial: basta copiar um bloco e trocar o texto.
+   Conteúdo baseado em material público da Sangfor (sangfor.com) e adaptado para vendas.
+   ========================================================================= */
+
+const PRODUTOS = [
+  {
+    nome: "Athena NGFW (Firewall de Nova Geração)",
+    antigo: "antes chamado NGAF",
+    cat: "sec",
+    catLabel: "Segurança",
+    oneliner: "O 'porteiro inteligente' da rede: barra ataques antes de entrarem na empresa.",
+    oquee: "Firewall de nova geração com Inteligência Artificial que inspeciona todo o tráfego de entrada e saída da rede, bloqueando vírus, invasões e sites maliciosos.",
+    pracliente: "A empresa fica protegida na 'porta de entrada' da internet, com menos equipamentos e custo menor do que soluções tradicionais.",
+    resolve: ["Empresa sem proteção de perímetro moderna", "Ataques e invasões vindas da internet", "Muitos aparelhos de segurança diferentes e caros"],
+    numeros: ["Bloqueia até 99% das ameaças no perímetro", "Até 50% de redução no custo total (TCO)", "Reduz o hardware de segurança em até 70%"],
+    pralembrar: "É o produto 'porta de entrada'. Quase todo cliente precisa de firewall — ótimo ponto de partida da conversa."
+  },
+  {
+    nome: "Athena EPP / Endpoint Secure",
+    antigo: "proteção de endpoint + anti-ransomware",
+    cat: "sec",
+    catLabel: "Segurança",
+    oneliner: "O 'guarda-costas' de cada computador e servidor contra vírus e ransomware.",
+    oquee: "Proteção avançada para os dispositivos (PCs, notebooks, servidores) com antivírus de nova geração e detecção por IA, sem depender só de assinaturas antigas.",
+    pracliente: "Protege os computadores da empresa contra ransomware (sequestro de dados) e consegue até recuperar arquivos caso sejam criptografados.",
+    resolve: ["Medo de ransomware / sequestro de dados", "Antivírus antigo que não pega ameaças novas", "Falta de visão do que acontece nas máquinas"],
+    numeros: ["Detecta ransomware em até 3 segundos", "99,83% de precisão de detecção", "Dados de mais de 12 milhões de endpoints"],
+    pralembrar: "O argumento mais forte aqui é RANSOMWARE. Toda empresa teme. Use o '3 segundos' e 'recupera os arquivos'."
+  },
+  {
+    nome: "Athena SASE (Acesso Seguro na Nuvem)",
+    antigo: "antes Access Secure",
+    cat: "sec",
+    catLabel: "Segurança",
+    oneliner: "Acesso seguro de qualquer lugar, para quem tem home office e filiais.",
+    oquee: "Plataforma na nuvem que junta várias proteções (acesso Zero Trust, filtro web, firewall na nuvem, prevenção de vazamento) num único agente leve instalado no dispositivo.",
+    pracliente: "Funcionários acessam sistemas com segurança de casa, da filial ou viajando — tudo controlado de um lugar só, sem VPN complicada.",
+    resolve: ["Trabalho remoto / híbrido inseguro", "VPN lenta e difícil de gerenciar", "Muitas filiais para conectar com segurança"],
+    numeros: ["Líder no Frost Radar SASE 2025", "No Gartner Magic Quadrant SASE 2026", "Mais de 70 pontos de presença (PoPs) no mundo"],
+    pralembrar: "Fale de SASE quando o cliente mencionar HOME OFFICE, FILIAIS ou 'VPN ruim'."
+  },
+  {
+    nome: "Athena XDR / Omni-Command",
+    antigo: "detecção e resposta estendida",
+    cat: "sec",
+    catLabel: "Segurança",
+    oneliner: "A 'central de monitoramento' que junta tudo num painel só.",
+    oquee: "Plataforma que correlaciona os eventos de segurança da rede e dos dispositivos, dando uma visão única das ameaças e respondendo mais rápido.",
+    pracliente: "Em vez de olhar vários sistemas separados, a equipe vê tudo num painel e reage mais rápido a incidentes.",
+    resolve: ["Equipe pequena de TI sobrecarregada", "Alertas espalhados em vários sistemas", "Demora para responder a incidentes"],
+    numeros: ["Visão unificada de rede + endpoint", "Resposta até 40% mais rápida", "Automação de investigação"],
+    pralembrar: "Bom para clientes que JÁ TÊM vários produtos e reclamam de 'falta de visão' ou 'equipe sobrecarregada'."
+  },
+  {
+    nome: "Athena MDR (Segurança como Serviço)",
+    antigo: "monitoramento gerenciado 24/7",
+    cat: "sec",
+    catLabel: "Segurança",
+    oneliner: "Um 'time de segurança terceirizado' que monitora a empresa 24h por dia.",
+    oquee: "Serviço em que especialistas da Sangfor monitoram, investigam e ajudam a responder a ameaças 24/7, no lugar de uma equipe interna.",
+    pracliente: "A empresa ganha uma equipe de especialistas vigiando dia e noite, sem precisar contratar e treinar gente.",
+    resolve: ["Não tem equipe de segurança dedicada", "Custo imprevisível de incidentes", "Precisa de vigilância 24/7"],
+    numeros: ["Monitoramento 24/7", "Entregue como serviço (previsível)", "Pacote amigável para pequenas e médias empresas"],
+    pralembrar: "Perfeito para cliente SEM equipe de TI/segurança ou com equipe pequena. Vende tranquilidade."
+  },
+  {
+    nome: "Sangfor HCI (Infraestrutura Hiperconvergente)",
+    antigo: "virtualização — alternativa ao VMware",
+    cat: "cloud",
+    catLabel: "Nuvem/Infra",
+    oneliner: "Substitui o VMware: junta servidores, armazenamento e rede num só sistema.",
+    oquee: "Plataforma que une computação, armazenamento, rede e segurança num único sistema de software rodando em servidores comuns (x86).",
+    pracliente: "O cliente moderniza o data center, reduz custo de licenças (ótimo pós-aumento de preços da VMware/Broadcom) e simplifica a operação.",
+    resolve: ["Aumento de preço da VMware/Broadcom", "Data center complexo e caro de manter", "Licenciamento imprevisível e pacotes forçados"],
+    numeros: ["Visionária no Gartner MQ Virtualização 2026", "Licença perpétua OU assinatura", "Caso real: 20–30% de redução de custo", "Migração assistida a partir da VMware"],
+    pralembrar: "GANCHO DE OURO em 2026: 'Como estão os custos da VMware depois da Broadcom?' — abre a porta para o HCI."
+  },
+  {
+    nome: "Sangfor IAG (Gestão de Acesso à Internet)",
+    antigo: "controle de navegação e banda",
+    cat: "net",
+    catLabel: "Rede",
+    oneliner: "Controla e otimiza o uso da internet pelos funcionários.",
+    oquee: "Solução que gerencia o acesso à internet: controla sites, aplicativos, banda e dá relatórios de uso.",
+    pracliente: "A empresa evita desperdício de internet, bloqueia conteúdo indevido e tem relatórios de produtividade e conformidade.",
+    resolve: ["Internet lenta por mau uso", "Falta de controle do que os funcionários acessam", "Necessidade de relatórios de acesso"],
+    numeros: ["Controle de aplicativos e banda", "Relatórios de uso detalhados", "Gestão centralizada"],
+    pralembrar: "Produto de entrada simples e de valor rápido. Bom para começar relacionamento e depois expandir."
+  },
+  {
+    nome: "Sangfor Agent Builder (IA)",
+    antigo: "plataforma de agentes de IA sem código",
+    cat: "ai",
+    catLabel: "Inteligência Artificial",
+    oneliner: "Cria assistentes de IA para a empresa — sem precisar programar.",
+    oquee: "Plataforma corporativa que permite criar, publicar e gerenciar agentes de IA sem escrever código, combinando bases de conhecimento da própria empresa com uma interface simples.",
+    pracliente: "A empresa transforma a IA numa ferramenta de produtividade do dia a dia, com controle e governança — qualquer área pode criar seu assistente.",
+    resolve: ["Quer usar IA mas acha complexo/arriscado", "Precisa automatizar tarefas e conhecimento interno", "Quer IA com controle e governança"],
+    numeros: ["Zero código (sem programar)", "Bases de conhecimento da empresa", "Gestão centralizada e controlada"],
+    pralembrar: "Gancho moderno: clientes querem IA mas têm medo. Aqui o valor é 'IA fácil, controlada e segura'. Ótimo para abrir conversa de inovação."
+  }
+];
+
+/* Casos de sucesso reais (material público Sangfor) — prova social para o cliente */
+const CASOS = [
+  {
+    setor: "Segurança / Data Center",
+    cliente: "Help AG (provedor de serviços de segurança)",
+    desafio: "Substituir a VMware reduzindo custo sem perder desempenho do data center.",
+    solucao: "Migração para Sangfor HCI.",
+    resultado: "Redução de 20–30% no custo, menor despesa de gestão e melhor desempenho das máquinas virtuais com tecnologia de auto-tiering.",
+    produtos: ["Sangfor HCI"]
+  },
+  {
+    setor: "Consultoria (Singapura)",
+    cliente: "Grande consultoria de gestão com +10 países",
+    desafio: "Acesso remoto via VPN caro e complexo, com várias caixas de segurança por filial e risco de vazamento de dados.",
+    solucao: "Sangfor Access Secure (SASE), substituindo firewall + VPN antigos.",
+    resultado: "Prova de conceito concluída em semanas e produção em menos de um mês, com segurança unificada num só painel.",
+    produtos: ["Athena SASE"]
+  },
+  {
+    setor: "Resposta a Incidente",
+    cliente: "Cliente vítima de infecção / ataque",
+    desafio: "Rede infectada, sistemas e backups comprometidos.",
+    solucao: "Equipe de resposta a incidentes da Sangfor.",
+    resultado: "Em até 24 horas: ameaça identificada e contida, backups e sistemas recuperados, ambiente devolvido limpo e seguro.",
+    produtos: ["Athena MDR", "Athena EPP"]
+  },
+  {
+    setor: "Educação / Pesquisa",
+    cliente: "IBA (universidade, Paquistão)",
+    desafio: "Operação de TI e ambiente virtual para alunos e professores, incluindo computação de alto desempenho.",
+    solucao: "Sangfor HCI + VDI (desktops virtuais).",
+    resultado: "Operação de TI simplificada, melhor uso de recursos e ambiente virtual seguro e flexível para alunos e corpo docente.",
+    produtos: ["Sangfor HCI"]
+  }
+];
+
+/* =========================================================================
+   CATÁLOGO DE MODELOS — FIREWALL (Athena NGFW / NGAF) família M-series
+   Fonte: portal de parceiros Sangfor (PCPQ). Use o "Nº máx. de usuários"
+   como critério comercial para recomendar o modelo pelo porte do cliente.
+   OBS: preencha os campos "a confirmar" conforme receber as specs de cada modelo.
+   ========================================================================= */
+const CATALOGO_FW = [
+  {
+    modelo: "M5100-AC-I-S", porte: "Pequena empresa",
+    usuarios: "600", netThroughput: "2 Gbps", appThroughput: "160 Mbps",
+    bandwidth: "80 Mbps", ipsecVpn: "20 Mb", concurrent: "60.000",
+    novo: "1.200/s", proxyUser: "500", endpointClient: "250",
+    specsCompletas: true
+  },
+  { modelo: "M5200-AC-I", porte: "Pequena/Média empresa", usuarios: "a confirmar", specsCompletas: false },
+  { modelo: "M5400-AC-I", porte: "Média empresa", usuarios: "a confirmar", specsCompletas: false },
+  { modelo: "M5500-AC-I", porte: "Média empresa", usuarios: "a confirmar", specsCompletas: false },
+  { modelo: "M5500-SK-AC-I", porte: "Média empresa", usuarios: "a confirmar", specsCompletas: false },
+  { modelo: "M5600-AC-I", porte: "Média/Grande empresa", usuarios: "a confirmar", specsCompletas: false },
+  { modelo: "M5800-SK-AC-I", porte: "Grande empresa", usuarios: "a confirmar", specsCompletas: false },
+  { modelo: "M6000-AC-I", porte: "Grande empresa / Data center", usuarios: "a confirmar", specsCompletas: false }
+];
+
+/* Rótulos amigáveis das specs, para o time comercial entender */
+const SPEC_LABELS = {
+  usuarios: "Nº máx. de usuários",
+  netThroughput: "Velocidade de rede (throughput)",
+  appThroughput: "Velocidade de aplicação",
+  bandwidth: "Banda",
+  ipsecVpn: "VPN (IPSec)",
+  concurrent: "Conexões simultâneas",
+  novo: "Novas conexões",
+  proxyUser: "Usuários de proxy",
+  endpointClient: "Clientes de endpoint"
+};
+
+/* Números institucionais da Sangfor — reforçam confiança (combate objeção de marca) */
+const INSTITUCIONAL = [
+  {big:"+100.000", cap:"clientes no mundo"},
+  {big:"100+", cap:"países e regiões (APAC, EMEA, LATAM)"},
+  {big:"+7.000", cap:"funcionários globais"},
+  {big:"25%", cap:"da receita reinvestida em P&D (2025)"},
+  {big:"+3.000", cap:"pedidos de patente"},
+  {big:"Zero", cap:"recalls de produto (2025)"}
+];
+
+const DORES = [
+  {
+    dor: "\"Tenho muito medo de ransomware / sequestro de dados\"",
+    sinais: ["Já ouviu caso de empresa parada", "Dados críticos", "Setor regulado (saúde, finanças)"],
+    pain: "Um ataque de ransomware pode parar a empresa por dias e custar caro em resgate, multas e reputação.",
+    sol: "Athena EPP / Endpoint Secure detecta e mata o ransomware em até 3 segundos e consegue recuperar arquivos já criptografados. Para proteção total, combine com Athena NGFW + MDR.",
+    say: "\"E se eu te dissesse que dá para detectar um ransomware em 3 segundos e ainda recuperar os arquivos que ele chegou a criptografar? É exatamente isso que a Sangfor faz.\"",
+    tags: ["Athena EPP", "Athena NGFW", "Athena MDR"]
+  },
+  {
+    dor: "\"A conta da VMware explodiu depois da Broadcom\"",
+    sinais: ["Reclamação de licença", "Renovação cara chegando", "Data center próprio"],
+    pain: "Depois da compra pela Broadcom, muitos clientes viram o custo de licenciamento da VMware subir muito, com modelo menos previsível.",
+    sol: "Sangfor HCI substitui a VMware juntando computação, armazenamento, rede e segurança num só sistema, com licenciamento mais previsível e menor custo total.",
+    say: "\"Vários clientes nossos trocaram a VMware pela Sangfor justamente por causa do aumento. Posso te mostrar uma comparação de custo lado a lado?\"",
+    tags: ["Sangfor HCI"]
+  },
+  {
+    dor: "\"Meu antivírus não me dá segurança, parece ultrapassado\"",
+    sinais: ["Antivírus antigo baseado em assinatura", "Já teve infecção", "Sem visibilidade das máquinas"],
+    pain: "Antivírus tradicionais dependem de uma 'lista' de ameaças conhecidas e deixam passar vírus novos e ataques sofisticados.",
+    sol: "Athena EPP usa IA para pegar ameaças desconhecidas (não só as da lista), com detecção e resposta modernas.",
+    say: "\"Seu antivírus de hoje só conhece ameaças antigas. O da Sangfor usa IA para pegar o que é novo — inclusive o que ninguém viu ainda.\"",
+    tags: ["Athena EPP"]
+  },
+  {
+    dor: "\"Meu pessoal trabalha de casa e a VPN é um problema\"",
+    sinais: ["Home office / híbrido", "Várias filiais", "VPN lenta/instável"],
+    pain: "VPNs tradicionais são lentas, difíceis de gerenciar e abrem brechas de segurança no trabalho remoto.",
+    sol: "Athena SASE entrega acesso seguro de qualquer lugar num agente leve só, sem a dor de cabeça da VPN tradicional.",
+    say: "\"Em vez de brigar com a VPN, imagine um acesso seguro, rápido e controlado de um painel só — de casa, da filial ou viajando. Isso é o SASE da Sangfor.\"",
+    tags: ["Athena SASE"]
+  },
+  {
+    dor: "\"Minha equipe de TI é pequena e vive apagando incêndio\"",
+    sinais: ["1-2 pessoas de TI", "Sem especialista de segurança", "Muitos alertas"],
+    pain: "Equipes enxutas não dão conta de monitorar segurança 24/7 nem de investigar cada alerta.",
+    sol: "Athena MDR coloca especialistas da Sangfor monitorando 24/7, e o Athena XDR junta tudo num painel para responder mais rápido.",
+    say: "\"Você não precisa contratar um time de segurança. A gente entrega esse time como serviço, vigiando sua empresa 24 horas por dia.\"",
+    tags: ["Athena MDR", "Athena XDR"]
+  },
+  {
+    dor: "\"Tenho vários produtos de segurança que não conversam entre si\"",
+    sinais: ["Firewall de uma marca, antivírus de outra", "Sem visão unificada", "Demora para responder"],
+    pain: "Produtos de marcas diferentes não se integram, criando pontos cegos e respostas lentas a ataques.",
+    sol: "O ecossistema Sangfor (NGFW + EPP + XDR) foi feito para trabalhar junto, com visão única e resposta automática.",
+    say: "\"Quando firewall e antivírus são da mesma família e conversam entre si, um ataque é bloqueado em segundos, sem depender de alguém cruzar as informações na mão.\"",
+    tags: ["Athena NGFW", "Athena EPP", "Athena XDR"]
+  },
+  {
+    dor: "\"A internet da empresa vive lenta e não sei o que estão acessando\"",
+    sinais: ["Reclamação de lentidão", "Sem controle de navegação", "Precisa de relatórios"],
+    pain: "Sem controle, a banda é consumida com uso indevido e não há relatórios de acesso para gestão e conformidade.",
+    sol: "Sangfor IAG controla aplicativos e banda, bloqueia conteúdo indevido e entrega relatórios de uso.",
+    say: "\"Dá para ver exatamente quem usa o quê, liberar o que importa para o trabalho e recuperar a velocidade da internet — com relatório na mão.\"",
+    tags: ["Sangfor IAG"]
+  }
+];
+
+const TROCAS = [
+  {
+    usa: "VMware / vSphere / vSAN",
+    contexto: "Virtualização / data center",
+    gancho: "Pergunte: \"Como ficaram seus custos de licença depois da Broadcom? Já te empurraram para pacotes grandes de assinatura?\"",
+    oferta: "Sangfor HCI",
+    porque: "Junta computação, armazenamento, rede e segurança num sistema só, com menor custo total e recuperação de desastres embutida. Diferencial-chave: oferece licenciamento PERPÉTUO ou por ASSINATURA (a VMware hoje força assinatura em pacotes grandes). Nomeada Visionária no Gartner Magic Quadrant de Virtualização de Servidores 2026 e tem migração automática das máquinas VMware (com configurações e políticas de segurança).",
+    say: "\"Diferente da VMware, você escolhe entre licença perpétua ou assinatura — sem ser forçado a pacote gigante. A migração é assistida e a economia costuma pagar o projeto. Caso real: um cliente reduziu de 20 a 30% o custo. Posso montar essa comparação para você?\""
+  },
+  {
+    usa: "Fortinet / Palo Alto / SonicWall / Cisco (firewall)",
+    contexto: "Firewall de perímetro",
+    gancho: "Pergunte: \"Quantas caixinhas e licenças separadas você mantém hoje para segurança?\"",
+    oferta: "Athena NGFW",
+    porque: "Firewall + proteção web + visibilidade num só equipamento, reduzindo hardware em até 70% e o custo total em até 50%, com IA integrada.",
+    say: "\"Em vez de empilhar vários aparelhos e licenças, você tem tudo num só, mais barato de manter e mais fácil de operar.\""
+  },
+  {
+    usa: "McAfee / Symantec / Kaspersky / antivírus tradicional",
+    contexto: "Proteção de endpoint",
+    gancho: "Pergunte: \"Seu antivírus hoje consegue recuperar arquivos se um ransomware passar?\"",
+    oferta: "Athena EPP / Endpoint Secure",
+    porque: "Detecção por IA (não só assinaturas), para ameaças novas, com anti-ransomware que age em 3 segundos e recupera arquivos.",
+    say: "\"Antivírus tradicional só conhece o que já é conhecido. O da Sangfor pega o novo e ainda reverte o estrago do ransomware.\""
+  },
+  {
+    usa: "VPN tradicional / acesso remoto antigo",
+    contexto: "Trabalho remoto e filiais",
+    gancho: "Pergunte: \"Seus usuários reclamam da VPN? Quanto tempo o TI gasta com isso?\"",
+    oferta: "Athena SASE",
+    porque: "Substitui a VPN por acesso seguro na nuvem, com Zero Trust e um agente leve só, gerenciado de um painel central.",
+    say: "\"Troque a dor de cabeça da VPN por um acesso seguro e rápido de qualquer lugar, controlado de um lugar só.\""
+  },
+  {
+    usa: "Sem monitoramento / só o próprio TI reativo",
+    contexto: "Operação de segurança",
+    gancho: "Pergunte: \"Quem cuida da sua segurança às 3h da manhã?\"",
+    oferta: "Athena MDR",
+    porque: "Especialistas da Sangfor monitorando 24/7 como serviço — sem custo de montar e treinar equipe interna.",
+    say: "\"Você ganha um time de segurança sem contratar ninguém: a gente vigia, investiga e ajuda a responder, dia e noite.\""
+  },
+  {
+    usa: "Cliente que só tem firewall Sangfor",
+    contexto: "Expansão dentro da base (upsell)",
+    gancho: "Pergunte: \"Seus computadores e servidores têm a mesma proteção da sua rede?\"",
+    oferta: "Athena EPP + Athena XDR",
+    porque: "Completa o ecossistema: firewall e endpoint da mesma família conversam entre si e bloqueiam ataques em segundos, com visão única.",
+    say: "\"Você já confia na Sangfor na porta de entrada. Levar a mesma inteligência para os computadores fecha o ciclo e tudo passa a se defender junto.\""
+  }
+];
+
+const OBJECOES = [
+  {
+    obj: "\"É muito caro / não tenho orçamento\"",
+    tipo: "Preço",
+    resposta: "Reposicione para CUSTO TOTAL, não preço de etiqueta. A Sangfor costuma reduzir o custo total em até 50% juntando funções num produto só e cortando hardware em até 70%. E um único ransomware custa muito mais que a solução.",
+    say: "\"Entendo. Vamos olhar o custo de 3 anos, não só a compra. Quando a gente soma licenças, hardware e o risco de um ataque, a Sangfor normalmente sai mais barata. Posso te mostrar os números?\""
+  },
+  {
+    obj: "\"Já tenho fornecedor / já uso outra marca\"",
+    tipo: "Status quo",
+    resposta: "Não ataque o concorrente de frente. Pergunte o que incomoda hoje (custo, suporte, complexidade) e mostre o diferencial exato naquele ponto. Ofereça uma prova de conceito (POC) sem compromisso.",
+    say: "\"Ótimo que já tem uma solução. Só por curiosidade: tem algo que te incomoda hoje em custo ou suporte? Muitos clientes chegaram à Sangfor justamente por isso — e a troca foi mais simples do que imaginavam.\""
+  },
+  {
+    obj: "\"Sangfor é marca chinesa, tenho receio\"",
+    tipo: "Confiança",
+    resposta: "Valide a preocupação e traga fatos: +100.000 clientes em 100+ países, reconhecimento do Gartner (Magic Quadrant SASE e Virtualização 2026) e Frost & Sullivan, +3.000 patentes, 25% da receita em P&D e certificações independentes (CyberRatings, OPSWAT Gold). Ofereça referências e POC.",
+    say: "\"Compreendo a preocupação. A Sangfor tem mais de 100 mil clientes em 100 países, é reconhecida pelo Gartner e pela Frost & Sullivan e tem certificações independentes de segurança. Posso te passar clientes de referência e montar um teste sem compromisso.\""
+  },
+  {
+    obj: "\"E o suporte? E se der problema?\"",
+    tipo: "Suporte",
+    resposta: "Destaque suporte local e serviços (inclusive MDR 24/7). Reforce que a solução integrada tem um único ponto de contato, em vez de várias marcas jogando a culpa entre si.",
+    say: "\"Com várias marcas, quando dá problema cada um culpa o outro. Com a Sangfor é um só responsável, com suporte próximo — e, se quiser, a gente ainda monitora tudo 24/7 com o serviço gerenciado.\""
+  },
+  {
+    obj: "\"Trocar dá muito trabalho / tenho medo da migração\"",
+    tipo: "Migração",
+    resposta: "Reduza o risco percebido: existe caminho de migração (ex: VMware → HCI), apoio da equipe e POC. Proponha começar por um projeto-piloto pequeno.",
+    say: "\"A gente não vira tudo de uma vez. Começamos com um piloto pequeno, você vê funcionando e aí expande. Nossa equipe conduz a migração junto com você.\""
+  },
+  {
+    obj: "\"Não é a hora / vamos deixar para depois\"",
+    tipo: "Urgência",
+    resposta: "Crie urgência com risco real (ransomware não espera orçamento) ou com gatilho financeiro (renovação cara da VMware/licença chegando). Agende um próximo passo concreto.",
+    say: "\"Faz sentido planejar. Só lembrando que ataque não espera o orçamento, e quanto mais perto da sua renovação, menor a margem de negociação. Que tal já deixarmos um teste agendado para você decidir com dados?\""
+  },
+  {
+    obj: "\"Preciso pensar / falar com a diretoria\"",
+    tipo: "Decisão",
+    resposta: "Facilite a venda interna dele: ofereça um resumo de 1 página com benefícios e custo, identifique quem decide e proponha uma reunião com esse decisor.",
+    say: "\"Perfeito. Deixa eu te ajudar a levar isso para dentro: preparo um resumo de uma página com custo e benefício que você apresenta para a diretoria. Faz sentido a gente marcar 15 minutos com quem decide?\""
+  }
+];
+
+const DIFERENCIAIS = [
+  {t:"Tudo integrado (ecossistema)", d:"Firewall, endpoint e XDR da mesma família conversam entre si e se defendem juntos, em vez de produtos soltos de marcas diferentes."},
+  {t:"Anti-ransomware em 3 segundos", d:"Detecta e neutraliza ransomware em até 3 segundos e consegue recuperar arquivos criptografados — argumento emocional e forte."},
+  {t:"Menor custo total (TCO)", d:"Até 50% de redução no custo total e até 70% menos hardware, ao juntar várias funções num produto só."},
+  {t:"Alternativa real à VMware", d:"Com o aumento de preços pós-Broadcom, o Sangfor HCI é Visionário no Gartner Magic Quadrant de Virtualização de Servidores 2026 e oferece licença perpétua OU assinatura — flexibilidade que a VMware hoje não dá."},
+  {t:"Escala e confiança global", d:"Mais de 100.000 clientes em 100+ países, 7.000+ funcionários e 25% da receita reinvestida em P&D — fatos que derrubam a objeção de marca."},
+  {t:"Reconhecimento independente", d:"Gartner Magic Quadrant (SASE), Frost & Sullivan, CyberRatings e certificação OPSWAT Gold dão credibilidade contra a objeção de confiança."},
+  {t:"Inovação e patentes", d:"Mais de 3.000 pedidos de patente e forte uso de IA em todo o portfólio."},
+  {t:"Segurança como serviço (MDR)", d:"Para quem não tem equipe, a Sangfor entrega monitoramento 24/7 como serviço — vende tranquilidade."},
+  {t:"Simplicidade de operação", d:"Painéis únicos e gestão centralizada facilitam a vida de equipes de TI enxutas."}
+];
+
+/* =========================================================================
+   ÍCONES SVG ANIMADOS por categoria de produto (sem imagens externas).
+   São desenhos vetoriais leves; a animação vem do CSS.
+   ========================================================================= */
+const ICONS = {
+  // Firewall / rede-perímetro (segurança)
+  sec: `<svg viewBox="0 0 64 64" class="picon"><defs></defs>
+    <path class="shield" d="M32 4 L56 14 V32 C56 46 45 56 32 60 C19 56 8 46 8 32 V14 Z"/>
+    <path class="check" d="M22 32 l7 7 l14 -15" fill="none"/>
+    <circle class="pulse" cx="32" cy="30" r="26" fill="none"/>
+  </svg>`,
+  // Nuvem / infraestrutura
+  cloud: `<svg viewBox="0 0 64 64" class="picon">
+    <path class="cloudbody" d="M20 44 h26 a10 10 0 0 0 0 -20 a14 14 0 0 0 -27 -3 a9 9 0 0 0 1 23 Z"/>
+    <circle class="orbit" cx="32" cy="34" r="27" fill="none"/>
+    <rect class="server" x="24" y="30" width="16" height="4" rx="1"/>
+    <rect class="server" x="24" y="37" width="16" height="4" rx="1"/>
+  </svg>`,
+  // Rede / IAG
+  net: `<svg viewBox="0 0 64 64" class="picon">
+    <circle class="node n1" cx="32" cy="14" r="5"/>
+    <circle class="node n2" cx="14" cy="46" r="5"/>
+    <circle class="node n3" cx="50" cy="46" r="5"/>
+    <circle class="node n4" cx="32" cy="36" r="6"/>
+    <path class="wire" d="M32 20 L32 30 M27 40 L17 44 M37 40 L47 44" fill="none"/>
+  </svg>`,
+  // IA / Agent Builder
+  ai: `<svg viewBox="0 0 64 64" class="picon">
+    <rect class="chip" x="18" y="18" width="28" height="28" rx="6"/>
+    <circle class="core" cx="32" cy="32" r="6"/>
+    <path class="leg" d="M24 18 V10 M32 18 V10 M40 18 V10 M24 46 V54 M32 46 V54 M40 46 V54 M18 24 H10 M18 32 H10 M18 40 H10 M46 24 H54 M46 32 H54 M46 40 H54" fill="none"/>
+  </svg>`
+};
+function iconFor(cat){ return ICONS[cat] || ICONS.sec; }
+
+/* =========================================================================
+   RECOMENDADOR — opções de dor e o que recomendar para cada uma.
+   "fw:true" significa que a solução envolve firewall (mostra modelo por porte).
+   ========================================================================= */
+const REC_DORES = [
+  {
+    label: "Medo de ransomware / sequestro de dados",
+    sol: "Athena EPP + NGFW (proteção anti-ransomware)",
+    porque: "O Endpoint detecta e mata ransomware em até 3 segundos e recupera arquivos; o firewall barra a ameaça na entrada. Juntos, cobrem endpoint e rede.",
+    pitch: "Imagina detectar um ransomware em 3 segundos e ainda recuperar os arquivos que ele chegou a criptografar. É exatamente isso que a Sangfor faz, protegendo os computadores e a rede ao mesmo tempo.",
+    produtos: ["Athena EPP", "Athena NGFW", "Athena MDR"], fw:true
+  },
+  {
+    label: "Conta da VMware ficou cara (pós-Broadcom)",
+    sol: "Sangfor HCI (alternativa à VMware)",
+    porque: "Junta computação, armazenamento, rede e segurança num só sistema, com licença perpétua OU assinatura e migração assistida. Casos reais mostram 20–30% de economia.",
+    pitch: "Diferente da VMware, com a Sangfor você escolhe entre licença perpétua ou assinatura, sem pacote gigante forçado. A migração é assistida e a economia costuma pagar o projeto.",
+    produtos: ["Sangfor HCI"], fw:false
+  },
+  {
+    label: "Antivírus atual é fraco / ultrapassado",
+    sol: "Athena EPP / Endpoint Secure",
+    porque: "Usa IA para pegar ameaças desconhecidas, não só as da lista de assinaturas, com resposta moderna e anti-ransomware.",
+    pitch: "Seu antivírus de hoje só conhece ameaças antigas. O da Sangfor usa IA para pegar o que é novo, inclusive o que ninguém viu ainda.",
+    produtos: ["Athena EPP"], fw:false
+  },
+  {
+    label: "Trabalho remoto / filiais / VPN ruim",
+    sol: "Athena SASE (acesso seguro na nuvem)",
+    porque: "Substitui a VPN por acesso seguro na nuvem num agente leve só, com Zero Trust e gestão centralizada.",
+    pitch: "Em vez de brigar com a VPN, imagine um acesso seguro e rápido de casa, da filial ou viajando, controlado de um painel só. Isso é o SASE da Sangfor.",
+    produtos: ["Athena SASE"], fw:false
+  },
+  {
+    label: "Equipe de TI pequena / sem segurança 24/7",
+    sol: "Athena MDR + XDR",
+    porque: "Especialistas da Sangfor monitoram 24/7 como serviço, e o XDR junta tudo num painel para resposta rápida.",
+    pitch: "Você não precisa contratar um time de segurança. A gente entrega esse time como serviço, vigiando sua empresa 24 horas por dia.",
+    produtos: ["Athena MDR", "Athena XDR"], fw:false
+  },
+  {
+    label: "Proteger a rede / firewall na entrada",
+    sol: "Athena NGFW (firewall de nova geração)",
+    porque: "Firewall com IA que barra até 99% das ameaças no perímetro, juntando várias funções num só equipamento e reduzindo custo.",
+    pitch: "A porta de entrada da sua empresa merece um porteiro inteligente: o firewall da Sangfor usa IA para barrar as ameaças antes de entrarem, com menos equipamentos e custo menor.",
+    produtos: ["Athena NGFW"], fw:true
+  },
+  {
+    label: "Quer usar IA com segurança e controle",
+    sol: "Sangfor Agent Builder",
+    porque: "Plataforma sem código para criar assistentes de IA usando o conhecimento da empresa, com governança e controle.",
+    pitch: "Dá para colocar IA para trabalhar na sua empresa de forma simples, segura e controlada, criando assistentes sem precisar programar.",
+    produtos: ["Sangfor Agent Builder"], fw:false
+  }
+];
+
+/* Estado das respostas do recomendador (preenchido conforme o usuário clica) */
+const REC_STATE = { dor:null, porte:null, usa:"" };
+
+/* =========================================================================
+   BATTLECARDS — Sangfor vs. cada concorrente, lado a lado.
+   Linguagem comercial. "Nunca ataque o concorrente de frente": use como
+   argumento de valor, sempre validando o que o cliente tem hoje.
+   Baseado em material público (sangfor.com) e análises de mercado 2026.
+   ========================================================================= */
+const BATTLECARDS = [
+  {
+    vs: "VMware (Broadcom)",
+    area: "Virtualização / Data Center",
+    produto: "Sangfor HCI",
+    quando: "Cliente usa vSphere/vSAN e sentiu o aumento de preço pós-Broadcom.",
+    linhas: [
+      { ponto: "Licenciamento", concorrente: "Só assinatura, em pacotes grandes obrigatórios", sangfor: "Perpétuo OU assinatura (você escolhe)" },
+      { ponto: "Custo total (TCO)", concorrente: "Subiu bastante após a Broadcom", sangfor: "Menor; casos reais de 20–30% de economia" },
+      { ponto: "Arquitetura", concorrente: "Vários módulos e licenças separadas", sangfor: "Computação + storage + rede + segurança num stack só" },
+      { ponto: "Migração", concorrente: "—", sangfor: "Migração assistida a partir da VMware (VMs e políticas)" },
+      { ponto: "Reconhecimento", concorrente: "Líder consolidado", sangfor: "Visionária no Gartner MQ Virtualização 2026" }
+    ],
+    vencer: "Foque no bolso e na previsibilidade: 'você escolhe como licenciar e não é forçado a pacote gigante'.",
+    cuidado: "VMware tem ecossistema maduro e muita integração de terceiros. Para ambientes muito grandes/complexos, proponha um piloto para provar a paridade.",
+    say: "Depois da Broadcom, muita gente está revendo a VMware na renovação. Com a Sangfor você escolhe licença perpétua ou assinatura e a economia costuma pagar o projeto. Topa uma comparação lado a lado?"
+  },
+  {
+    vs: "Nutanix",
+    area: "Virtualização / HCI",
+    produto: "Sangfor HCI",
+    quando: "Cliente avalia HCI e colocou a Nutanix na mesa como alternativa à VMware.",
+    linhas: [
+      { ponto: "Posicionamento", concorrente: "HCI premium, forte em multicloud híbrido", sangfor: "HCI full-stack com segurança integrada" },
+      { ponto: "Custo", concorrente: "Costuma ter custo elevado", sangfor: "Custo-benefício competitivo para a região" },
+      { ponto: "Segurança", concorrente: "Depende de camadas adicionais", sangfor: "Segurança embutida no mesmo fabricante" },
+      { ponto: "Suporte local", concorrente: "Varia por região", sangfor: "Suporte local próximo e serviços (MDR)" }
+    ],
+    vencer: "Destaque o conjunto 'infra + segurança do mesmo fabricante' e o custo-benefício.",
+    cuidado: "Nutanix é forte tecnicamente e bem avaliada. Não desmereça; posicione pela simplicidade de ter tudo num fornecedor só.",
+    say: "A Nutanix é boa, sem dúvida. A vantagem da Sangfor é entregar infraestrutura e segurança do mesmo fabricante, com um custo mais amigável e suporte próximo."
+  },
+  {
+    vs: "Fortinet (FortiGate)",
+    area: "Firewall / Segurança de rede",
+    produto: "Athena NGFW",
+    quando: "Cliente usa FortiGate e quer renovar ou expandir a segurança de perímetro.",
+    linhas: [
+      { ponto: "Funções core", concorrente: "NAT, IPS, roteamento, filtro de URL", sangfor: "As mesmas funções (substituição 1-para-1 na maioria dos casos)" },
+      { ponto: "Integração com endpoint", concorrente: "Fabric (requer licenças do ecossistema)", sangfor: "Firewall + Endpoint da Sangfor se defendem juntos nativamente" },
+      { ponto: "Anti-ransomware", concorrente: "Proteção de rede", sangfor: "Rede + endpoint com bloqueio de ransomware em 3s" },
+      { ponto: "Custo total", concorrente: "Bom custo no mid-market", sangfor: "Menos hardware (até -70%) e TCO até -50%" }
+    ],
+    vencer: "Mostre a sinergia firewall+endpoint do mesmo fabricante e o anti-ransomware em 3s.",
+    cuidado: "Fortinet é muito popular e tem ótimo desempenho por preço. Reconheça isso e diferencie pela integração e pelo anti-ransomware.",
+    say: "O FortiGate é uma boa caixa. A diferença é que, na Sangfor, firewall e proteção dos computadores são do mesmo fabricante e reagem juntos, bloqueando ransomware em segundos."
+  },
+  {
+    vs: "Palo Alto Networks",
+    area: "Firewall / Segurança de rede",
+    produto: "Athena NGFW",
+    quando: "Cliente tem (ou cotou) Palo Alto e o preço/complexidade é um ponto sensível.",
+    linhas: [
+      { ponto: "Posicionamento", concorrente: "Premium, forte em prevenção de ameaças", sangfor: "Proteção forte com IA e custo bem menor" },
+      { ponto: "Preço", concorrente: "Geralmente o mais caro do mercado", sangfor: "Custo total significativamente menor" },
+      { ponto: "Operação", concorrente: "Pode exigir equipe mais especializada", sangfor: "Gestão simplificada; bom para equipes enxutas" },
+      { ponto: "Integração", concorrente: "Ecossistema amplo", sangfor: "Ecossistema Sangfor integrado (NGFW+EPP+XDR)" }
+    ],
+    vencer: "O gancho é custo-benefício: 'proteção de alto nível sem o preço premium'.",
+    cuidado: "Palo Alto tem forte reputação em prevenção de ameaças. Não negue a qualidade; compare pelo custo-benefício e pela simplicidade.",
+    say: "O Palo Alto é excelente e tem preço premium. A Sangfor entrega proteção com IA de alto nível por um custo bem menor e mais fácil de operar. Vale comparar os números."
+  },
+  {
+    vs: "McAfee / Symantec / Kaspersky",
+    area: "Antivírus / Endpoint",
+    produto: "Athena EPP",
+    quando: "Cliente usa antivírus tradicional baseado em assinaturas.",
+    linhas: [
+      { ponto: "Detecção", concorrente: "Depende de lista de assinaturas conhecidas", sangfor: "IA detecta ameaças novas e desconhecidas" },
+      { ponto: "Ransomware", concorrente: "Proteção limitada contra variantes novas", sangfor: "Detecta e mata em 3s + recupera arquivos" },
+      { ponto: "Resposta", concorrente: "Muitas vezes manual", sangfor: "Detecção e resposta (EDR) modernas" },
+      { ponto: "Integração", concorrente: "Produto isolado", sangfor: "Integra com firewall e XDR da Sangfor" }
+    ],
+    vencer: "Pergunte: 'seu antivírus recupera arquivos se um ransomware passar?' — e mostre o diferencial.",
+    cuidado: "São marcas conhecidas e de confiança do cliente. Posicione como evolução ('nova geração'), não como 'o seu é ruim'.",
+    say: "Seu antivírus de hoje conhece o que já é conhecido. O da Sangfor usa IA para pegar o que é novo e ainda reverte o estrago de um ransomware. É a evolução natural."
+  }
+];
