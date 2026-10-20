@@ -7,9 +7,25 @@
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<!-- Tela de abertura animada -->
+<div id="splash">
+  <div class="splash-inner">
+    <img id="splash-logo-img" class="splash-logo-img" src="logo.png" alt="Sangfor" />
+    <div class="splash-logo splash-logo-fallback">SANGFOR</div>
+    <div class="splash-sub">Cartilha Comercial</div>
+    <div class="splash-bar"><span></span></div>
+  </div>
+</div>
+
+<!-- Fundo animado (partículas/gradiente) -->
+<canvas id="bg"></canvas>
+<!-- Camada de confete -->
+<canvas id="confetti"></canvas>
+
 <header class="topbar">
   <div class="brand">
-    <span class="logo">SANGFOR</span>
+    <img id="logo-img" class="logo-img" src="logo.png" alt="Sangfor" />
+    <span class="logo logo-fallback">SANGFOR</span>
     <span class="tag">Cartilha Comercial</span>
   </div>
   <input id="search" type="search" placeholder="Buscar produto, dor, objeção ou concorrente..." />
@@ -21,6 +37,7 @@
 <nav class="tabs" id="tabs">
   <button class="tab active" data-view="inicio">🏠 Início</button>
   <button class="tab" data-view="recomendador">🎯 Recomendador</button>
+  <button class="tab" data-view="roi">💰 Simulador ROI</button>
   <button class="tab" data-view="produtos">📦 Produtos</button>
   <button class="tab" data-view="catalogo">🧰 Catálogo (Modelos)</button>
   <button class="tab" data-view="dores">💢 Dores → Solução</button>

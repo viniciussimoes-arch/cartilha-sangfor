@@ -5,6 +5,21 @@ const tabs = document.getElementById("tabs");
 const search = document.getElementById("search");
 let currentView = "inicio";
 
+/* ---------- Logo: usa logo.png se existir; senão, texto "SANGFOR" ----------
+   Começa mostrando o texto (fallback). Se a imagem carregar de verdade,
+   troca pela imagem. Assim a cartilha nunca fica com um espaço vazio. */
+(function setupLogo(){
+  document.body.classList.add("no-logo-img"); // estado inicial: mostra texto
+  ["logo-img","splash-logo-img"].forEach(id=>{
+    const img = document.getElementById(id);
+    if(!img) return;
+    img.addEventListener("load", ()=>{
+      if(img.naturalWidth > 0) document.body.classList.remove("no-logo-img");
+    });
+    img.addEventListener("error", ()=>{ img.style.display="none"; });
+  });
+})();
+
 /* ---------- Renderizadores de cada aba ---------- */
 
 function viewInicio() {
@@ -138,6 +153,77 @@ function gerarRecomendacao(){
 
     <div class="callout"><b>Dica:</b> use o botão 🖥️ (topo) para entrar no <b>Modo Apresentação</b> e mostrar esta recomendação ao cliente em tela cheia.</div>`;
   box.scrollIntoView({behavior:"smooth"});
+  lancarConfete();   // 🎉 celebra a recomendação gerada
+}
+
+/* ---------- SIMULADOR DE ECONOMIA (ROI) ---------- */
+function viewRoi() {
+  return `
+  <h1>💰 Simulador de Economia (ROI)</h1>
+  <p class="lead">Estime a economia do cliente ao trocar para a Sangfor. Ótimo contra a objeção "é caro":
+  mostre o impacto no bolso em 3 anos. Os percentuais são estimativas comerciais baseadas em material
+  público da Sangfor (ex.: até 50% de redução de TCO) — ajuste conforme a proposta real.</p>
+
+  <div class="card" style="padding:24px">
+    <div class="label">1 · Qual área o cliente quer avaliar?</div>
+    <div class="opts" id="roi-area">
+      <button class="opt sel" data-group="roi-area" data-val="fw" data-eco="40">🛡️ Firewall / Segurança de rede</button>
+      <button class="opt" data-group="roi-area" data-val="hci" data-eco="30">☁️ Virtualização (trocar VMware)</button>
+      <button class="opt" data-group="roi-area" data-val="epp" data-eco="25">💻 Endpoint / Antivírus</button>
+    </div>
+
+    <div class="roi-fields">
+      <div>
+        <div class="label">2 · Gasto ANUAL atual com a solução de hoje (R$)</div>
+        <input id="roi-gasto" class="roi-input" type="number" min="0" step="1000" placeholder="Ex: 120000" />
+        <div class="hintline">Some licenças + suporte + hardware por ano. Não sabe? Use uma estimativa.</div>
+      </div>
+      <div>
+        <div class="label">3 · Economia estimada com a Sangfor</div>
+        <input id="roi-pct" class="roi-input" type="number" min="0" max="90" step="5" value="40" />
+        <div class="hintline">Já preenchemos uma estimativa pela área. Você pode ajustar (%).</div>
+      </div>
+    </div>
+
+    <button id="roi-go" class="cta" style="margin-top:20px">Calcular economia →</button>
+  </div>
+
+  <div id="roi-result" style="margin-top:22px"></div>`;
+}
+
+function calcularRoi(){
+  const box = document.getElementById("roi-result");
+  const gasto = parseFloat((document.getElementById("roi-gasto")||{}).value);
+  const pct = parseFloat((document.getElementById("roi-pct")||{}).value);
+  if(!gasto || gasto<=0 || isNaN(pct)){
+    box.innerHTML = `<div class="callout"><b>Falta um dado:</b> informe o <b>gasto anual atual</b> (um número maior que zero) e a <b>economia estimada (%)</b>.</div>`;
+    return;
+  }
+  const fmt = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+  const economiaAno = gasto * (pct/100);
+  const novoGasto = gasto - economiaAno;
+  const economia3 = economiaAno * 3;
+
+  box.innerHTML = `
+    <div class="hero" style="padding:26px 28px">
+      <h1 style="font-size:24px">💰 Economia estimada</h1>
+      <p>Com cerca de <b style="color:#fff">${pct}%</b> de redução sobre um gasto anual de
+      <b style="color:#fff">${fmt(gasto)}</b>.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="big" data-count="${Math.round(economiaAno)}" data-money="true">0</div><div class="cap">economia por ANO</div></div>
+      <div class="stat"><div class="big" data-count="${Math.round(economia3)}" data-money="true">0</div><div class="cap">economia em 3 ANOS</div></div>
+      <div class="stat"><div class="big" data-count="${Math.round(novoGasto)}" data-money="true">0</div><div class="cap">novo gasto anual (estimado)</div></div>
+    </div>
+    <div class="block">
+      <p class="q"><span class="ico">🎤</span><span>Como usar isso na conversa</span></p>
+      <div class="box say"><span class="bt">Frase pronta</span>${copyable(`Olhando o seu gasto atual, a estimativa é economizar cerca de ${fmt(economiaAno)} por ano — algo em torno de ${fmt(economia3)} em três anos. Em vez de olhar só o preço de compra, vale enxergar esse retorno. Posso detalhar numa proposta?`)}</div>
+      <div class="box pain"><span class="bt">⚠️ Importante</span>Valor estimado para apoiar a conversa. A economia real depende da proposta fechada, do cenário e dos descontos. Use como ordem de grandeza, não como garantia.</div>
+    </div>
+    <div class="callout"><b>Dica:</b> exporte esta tela em <b>📄 PDF</b> (botão no topo) e leve a estimativa para o cliente.</div>`;
+  animateCounters();
+  box.scrollIntoView({behavior:"smooth"});
+  lancarConfete();
 }
 
 function viewProdutos() {
@@ -348,7 +434,7 @@ function viewDiferenciais() {
 }
 
 const VIEWS = {
-  inicio: viewInicio, recomendador: viewRecomendador,
+  inicio: viewInicio, recomendador: viewRecomendador, roi: viewRoi,
   produtos: viewProdutos, catalogo: viewCatalogo, dores: viewDores,
   troca: viewTroca, objecoes: viewObjecoes, pitch: viewPitch,
   casos: viewCasos, battlecards: viewBattlecards, diferenciais: viewDiferenciais
@@ -375,17 +461,52 @@ function render(view){
   window.scrollTo({top:0,behavior:"smooth"});
   applySearch();
   animateCounters();
+  setupScrollReveal();
+  setupTilt();
 }
+
+/* ---------- Scroll reveal: elementos aparecem ao rolar ---------- */
+let _io = null;
+function setupScrollReveal(){
+  const alvos = app.querySelectorAll(".card, .block, .step, .stat, .tablewrap");
+  if(prefersReduced()){ alvos.forEach(el=>el.classList.add("revealed")); return; }
+  if(_io) _io.disconnect();
+  _io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("revealed"); _io.unobserve(en.target); } });
+  }, {threshold:.08});
+  alvos.forEach(el=>{ el.classList.add("reveal"); _io.observe(el); });
+}
+
+/* ---------- Card tilt 3D: cards inclinam seguindo o mouse ---------- */
+function setupTilt(){
+  if(prefersReduced() || matchMedia("(pointer: coarse)").matches) return; // sem tilt no toque
+  app.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("mousemove", e=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width - .5;
+      const py = (e.clientY - r.top)/r.height - .5;
+      card.style.transform = `perspective(800px) rotateY(${px*8}deg) rotateX(${ -py*8}deg) translateY(-6px)`;
+    });
+    card.addEventListener("mouseleave", ()=>{ card.style.transform=""; });
+  });
+}
+function prefersReduced(){ return matchMedia("(prefers-reduced-motion: reduce)").matches; }
 
 /* ---------- Contadores animados ---------- */
 function animateCounters(){
   app.querySelectorAll("[data-count]").forEach(el=>{
+    if(el.dataset.done) return;           // evita reanimar
+    el.dataset.done = "1";
     const target = parseFloat(el.dataset.count);
     const prefix = el.dataset.prefix || "";
     const suffix = el.dataset.suffix || "";
     const sep = el.dataset.sep === "true";
+    const money = el.dataset.money === "true";
     const dur = 1100; const start = performance.now();
-    function fmt(n){ return sep ? Math.round(n).toLocaleString("pt-BR") : Math.round(n); }
+    function fmt(n){
+      if(money) return Math.round(n).toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+      return sep ? Math.round(n).toLocaleString("pt-BR") : Math.round(n);
+    }
     function tick(now){
       const p = Math.min((now-start)/dur,1);
       const eased = 1-Math.pow(1-p,3);
@@ -454,6 +575,15 @@ app.addEventListener("click", e => {
     return;
   }
   if(e.target.id==="rec-go"){ gerarRecomendacao(); return; }
+
+  // ---------- ROI: ao escolher a área, preenche o % estimado ----------
+  const roiArea = e.target.closest('[data-group="roi-area"]');
+  if(roiArea){
+    const pctInput = document.getElementById("roi-pct");
+    if(pctInput && roiArea.dataset.eco) pctInput.value = roiArea.dataset.eco;
+    return;
+  }
+  if(e.target.id==="roi-go"){ calcularRoi(); return; }
 
   // ---------- Copiar frase ----------
   const cp = e.target.closest(".copybtn");
@@ -525,6 +655,77 @@ document.addEventListener("fullscreenchange", ()=>{
     presentBtn.textContent="🖥️"; presentBtn.title="Modo apresentação (tela cheia)";
   }
 });
+
+/* ---------- Tela de abertura (splash) ---------- */
+(function splash(){
+  const el = document.getElementById("splash");
+  if(!el) return;
+  const hide = ()=>{ el.classList.add("gone"); setTimeout(()=>el.remove(), 600); };
+  // some após a animação (ou já direto se o usuário prefere menos movimento)
+  setTimeout(hide, prefersReduced() ? 200 : 1800);
+})();
+
+/* ---------- Fundo animado (partículas conectadas) ---------- */
+(function animatedBg(){
+  const canvas = document.getElementById("bg");
+  if(!canvas || prefersReduced()) return;
+  const ctx = canvas.getContext("2d");
+  let w,h,pts,raf;
+  function resize(){ w=canvas.width=innerWidth; h=canvas.height=innerHeight;
+    const n = Math.min(70, Math.floor(w*h/22000));
+    pts = Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
+  }
+  function color(){ return document.body.classList.contains("dark") ? "255,120,110" : "226,35,26"; }
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    const c = color();
+    for(const p of pts){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1;
+    }
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.hypot(dx,dy);
+        if(d<120){ ctx.strokeStyle=`rgba(${c},${(1-d/120)*.16})`; ctx.lineWidth=1;
+          ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke(); }
+      }
+      ctx.fillStyle=`rgba(${c},.5)`; ctx.beginPath(); ctx.arc(pts[i].x,pts[i].y,1.6,0,7); ctx.fill();
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  addEventListener("resize", resize); resize(); frame();
+})();
+
+/* ---------- Confete (celebração) ---------- */
+function lancarConfete(){
+  const canvas = document.getElementById("confetti");
+  if(!canvas || prefersReduced()) return;
+  const ctx = canvas.getContext("2d");
+  canvas.width=innerWidth; canvas.height=innerHeight;
+  const cores=["#e2231a","#ff5a45","#1f5fb0","#15925e","#f0a500","#6a3fb0"];
+  const peças = Array.from({length:140},()=>({
+    x:innerWidth/2+(Math.random()-.5)*200, y:innerHeight*0.3,
+    vx:(Math.random()-.5)*9, vy:Math.random()*-9-3,
+    s:6+Math.random()*6, c:cores[Math.floor(Math.random()*cores.length)],
+    rot:Math.random()*6, vr:(Math.random()-.5)*.3, a:1
+  }));
+  let raf, t=0;
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height); t++;
+    let vivos=0;
+    for(const p of peças){
+      p.vy+=0.25; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+      if(t>60) p.a-=0.02;
+      if(p.a>0 && p.y<canvas.height+20){
+        vivos++;
+        ctx.save(); ctx.globalAlpha=Math.max(0,p.a); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+        ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6); ctx.restore();
+      }
+    }
+    if(vivos>0) raf=requestAnimationFrame(frame); else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  frame();
+}
 
 /* ---------- Início ---------- */
 render("inicio");
