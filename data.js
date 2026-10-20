@@ -531,3 +531,95 @@ const BATTLECARDS = [
     say: "Seu antivírus de hoje conhece o que já é conhecido. O da Sangfor usa IA para pegar o que é novo e ainda reverte o estrago de um ransomware. É a evolução natural."
   }
 ];
+
+/* =========================================================================
+   LINHA DO TEMPO DA VENDA — o ciclo completo, etapa a etapa.
+   Para cada etapa: objetivo, o que fazer, erros a evitar, uma frase pronta,
+   e atalho para a aba da cartilha que ajuda naquele momento.
+   ========================================================================= */
+const JORNADA = [
+  {
+    icone: "🔎", fase: "1. Prospecção",
+    objetivo: "Encontrar e abordar o cliente certo.",
+    fazer: [
+      "Pesquise o cliente: setor, tamanho, o que já usa.",
+      "Use um gancho relevante (ex.: custo da VMware, medo de ransomware).",
+      "Faça o primeiro contato com foco em marcar uma conversa, não em vender."
+    ],
+    evitar: "Sair falando de produto antes de entender o cliente.",
+    say: "Oi [nome], tudo bem? Trabalho com soluções de segurança e infraestrutura e, vendo o perfil da [empresa], acho que posso te trazer algumas ideias úteis. Teria 15 minutos esta semana?",
+    atalho: "diferenciais", atalhoLabel: "⭐ Diferenciais"
+  },
+  {
+    icone: "🎯", fase: "2. Qualificação",
+    objetivo: "Entender a dor, o orçamento e quem decide.",
+    fazer: [
+      "Descubra a principal dor e o que o cliente já usa hoje.",
+      "Identifique quem decide e se há orçamento/prazo.",
+      "Use o Recomendador para já mapear a solução ideal."
+    ],
+    evitar: "Gastar energia com quem não decide ou não tem necessidade real.",
+    say: "Para eu te ajudar de verdade: hoje, o que mais te preocupa em segurança ou infraestrutura? E como costuma ser a decisão desse tipo de projeto aí?",
+    atalho: "recomendador", atalhoLabel: "🎯 Recomendador"
+  },
+  {
+    icone: "💡", fase: "3. Apresentação da solução",
+    objetivo: "Conectar a dor do cliente à solução Sangfor.",
+    fazer: [
+      "Mostre a solução que resolve a dor principal (uma, não o portfólio todo).",
+      "Prove com números e reconhecimento (Gartner, 3s anti-ransomware).",
+      "Use o Modo Apresentação para mostrar ao cliente."
+    ],
+    evitar: "Despejar todos os produtos e recursos de uma vez.",
+    say: "Pelo que você me contou, o ponto mais crítico é [dor]. É exatamente aí que a Sangfor é mais forte — deixa eu te mostrar como resolvemos isso na prática.",
+    atalho: "dores", atalhoLabel: "💢 Dores → Solução"
+  },
+  {
+    icone: "📊", fase: "4. Proposta e valor",
+    objetivo: "Mostrar o retorno, não só o preço.",
+    fazer: [
+      "Apresente o custo em 3 anos, não só a compra.",
+      "Use o Simulador de ROI para mostrar a economia.",
+      "Compare com o concorrente usando os Battlecards."
+    ],
+    evitar: "Entrar na guerra de preço sem mostrar o valor/retorno.",
+    say: "Em vez de olhar só o preço de compra, vamos ver o retorno: a estimativa é economizar [valor] em 3 anos. Posso detalhar numa proposta objetiva?",
+    atalho: "roi", atalhoLabel: "💰 Simulador ROI"
+  },
+  {
+    icone: "🛡️", fase: "5. Tratamento de objeções",
+    objetivo: "Remover as barreiras para a decisão.",
+    fazer: [
+      "Ouça a objeção inteira antes de responder.",
+      "Valide a preocupação e use a resposta pronta certa.",
+      "Reduza o risco: ofereça uma prova de conceito (POC)."
+    ],
+    evitar: "Discutir ou menosprezar a objeção do cliente.",
+    say: "Entendo totalmente sua preocupação. Deixa eu te mostrar como outros clientes resolveram isso — e, se fizer sentido, a gente faz um teste sem compromisso.",
+    atalho: "objecoes", atalhoLabel: "🛡️ Objeções"
+  },
+  {
+    icone: "🤝", fase: "6. Fechamento",
+    objetivo: "Conduzir à decisão com um próximo passo claro.",
+    fazer: [
+      "Resuma o valor combinado e confirme o entendimento.",
+      "Proponha um próximo passo concreto (POC, pedido, reunião com decisor).",
+      "Facilite a venda interna dele (resumo de 1 página)."
+    ],
+    evitar: "Terminar a conversa sem um próximo passo agendado.",
+    say: "Faz sentido para você? Então proponho o seguinte próximo passo: [POC/proposta/assinatura] até [data]. Posso já deixar agendado?",
+    atalho: "pitch", atalhoLabel: "🎤 Pitch Rápido"
+  },
+  {
+    icone: "🌱", fase: "7. Pós-venda e expansão",
+    objetivo: "Garantir sucesso e abrir novas vendas (upsell).",
+    fazer: [
+      "Acompanhe a implantação e o sucesso do cliente.",
+      "Peça indicações e um caso de sucesso.",
+      "Ofereça os produtos complementares do ecossistema Sangfor."
+    ],
+    evitar: "Sumir após a venda — é aqui que nasce a próxima.",
+    say: "Que bom que está funcionando bem! Já que você confia na Sangfor nesse ponto, faz sentido levar a mesma proteção para [outra área]? E você conhece alguém que também teria esse desafio?",
+    atalho: "troca", atalhoLabel: "🔄 Trocar p/ Sangfor"
+  }
+];

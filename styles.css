@@ -298,6 +298,34 @@ body.present .box,body.present .card,body.present .block,body.present .step{font
 body.present .block .q{font-size:21px}
 body.present .copybtn{display:none}   /* esconde botões de copiar ao apresentar */
 
+/* ---------- LINHA DO TEMPO DA VENDA ---------- */
+.timeline{position:relative;margin:10px 0 0;padding-left:8px}
+.timeline::before{ /* linha vertical com gradiente da marca */
+  content:"";position:absolute;left:26px;top:8px;bottom:8px;width:3px;
+  background:linear-gradient(var(--brand),var(--accent));border-radius:3px;
+}
+.tl-item{position:relative;display:flex;gap:18px;margin-bottom:18px}
+.tl-dot{
+  flex:none;width:52px;height:52px;border-radius:50%;z-index:1;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  background:var(--card);border:3px solid color-mix(in srgb,var(--brand) 45%,var(--line));
+  box-shadow:var(--shadow);
+}
+.tl-item:hover .tl-dot{border-color:var(--accent);box-shadow:var(--glow)}
+.tl-card{
+  flex:1;background:color-mix(in srgb,var(--card) 80%,transparent);backdrop-filter:blur(10px);
+  border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+}
+.tl-card:hover{transform:translateX(4px);box-shadow:var(--shadow-lg)}
+.tl-card h3{margin:0 0 6px;font-size:17px}
+.tl-obj{color:var(--muted);font-weight:600;font-size:14px;margin-bottom:4px}
+.tl-link{margin-top:10px;font-size:13px;padding:9px 16px}
+@media(max-width:560px){
+  .timeline::before{left:20px}
+  .tl-dot{width:40px;height:40px;font-size:19px}
+}
+
 /* ---------- BATTLECARDS ---------- */
 .block.bc{border-left-color:var(--brand2)}
 .bc-meta{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}

@@ -337,6 +337,29 @@ function viewObjecoes() {
     </div>`).join("")}`;
 }
 
+function viewJornada() {
+  return `
+  <h1>🗺️ Linha do Tempo da Venda</h1>
+  <p class="lead">O ciclo completo, da prospecção ao pós-venda. Em cada etapa: o objetivo, o que fazer,
+  o que evitar, uma frase pronta e o atalho para a ferramenta da cartilha que ajuda naquele momento.</p>
+  <div class="timeline">
+    ${JORNADA.map((e,i)=>`
+      <div class="tl-item" data-search="${txt(e.fase+' '+e.objetivo+' '+e.fazer.join(' '))}">
+        <div class="tl-dot">${e.icone}</div>
+        <div class="tl-card">
+          <h3>${e.fase}</h3>
+          <div class="tl-obj">🎯 ${e.objetivo}</div>
+          <div class="label">O que fazer</div>
+          <ul>${e.fazer.map(f=>`<li>${f}</li>`).join("")}</ul>
+          <div class="box pain"><span class="bt">⚠️ Evite</span>${e.evitar}</div>
+          <div class="box say"><span class="bt">🎤 Frase pronta</span>${copyable(e.say)}</div>
+          <button class="tl-link cta" data-goto="${e.atalho}">Abrir ${e.atalhoLabel} →</button>
+        </div>
+      </div>`).join("")}
+  </div>
+  <div class="callout"><b>Dica:</b> clique no botão de cada etapa para pular direto para a ferramenta que te ajuda ali (recomendador, objeções, ROI...).</div>`;
+}
+
 function viewPitch() {
   return `
   <h1>🎤 Pitch Rápido (roteiro de 5 passos)</h1>
@@ -436,7 +459,7 @@ function viewDiferenciais() {
 const VIEWS = {
   inicio: viewInicio, recomendador: viewRecomendador, roi: viewRoi,
   produtos: viewProdutos, catalogo: viewCatalogo, dores: viewDores,
-  troca: viewTroca, objecoes: viewObjecoes, pitch: viewPitch,
+  troca: viewTroca, objecoes: viewObjecoes, jornada: viewJornada, pitch: viewPitch,
   casos: viewCasos, battlecards: viewBattlecards, diferenciais: viewDiferenciais
 };
 
@@ -548,10 +571,16 @@ themeBtn.addEventListener("click", ()=>applyTheme(!document.body.classList.conta
 tabs.addEventListener("click", e => {
   const btn = e.target.closest(".tab");
   if(!btn) return;
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  btn.classList.add("active");
-  render(btn.dataset.view);
+  irParaAba(btn.dataset.view);
 });
+
+/* Troca de aba programática (usada pelos atalhos da Linha do Tempo) */
+function irParaAba(view){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.view === view);
+  });
+  render(view);
+}
 
 /* ---------- Busca ---------- */
 function applySearch(){
@@ -598,6 +627,10 @@ app.addEventListener("click", e => {
     return;
   }
   if(e.target.id==="roi-go"){ calcularRoi(); return; }
+
+  // ---------- Atalho da Linha do Tempo: pular para outra aba ----------
+  const goto = e.target.closest("[data-goto]");
+  if(goto){ irParaAba(goto.dataset.goto); return; }
 
   // ---------- Copiar frase ----------
   const cp = e.target.closest(".copybtn");
