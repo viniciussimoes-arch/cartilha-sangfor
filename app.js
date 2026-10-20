@@ -26,7 +26,7 @@ function viewInicio() {
   return `
   <div class="hero">
     <div class="blob b1"></div><div class="blob b2"></div>
-    <h1>Cartilha Comercial Sangfor</h1>
+    <h1><span id="typed" data-text="Cartilha Comercial Sangfor"></span><span class="caret">|</span></h1>
     <p>Seu guia de bolso para vender melhor: produtos em linguagem simples, dores conectadas
     a soluções, trocas de concorrentes e respostas prontas para objeções.</p>
   </div>
@@ -463,6 +463,20 @@ function render(view){
   animateCounters();
   setupScrollReveal();
   setupTilt();
+  typeTitle();
+}
+
+/* ---------- Efeito de digitação no título da home ---------- */
+function typeTitle(){
+  const el = document.getElementById("typed");
+  if(!el) return;
+  const full = el.dataset.text || "";
+  if(prefersReduced()){ el.textContent = full; return; }
+  let i = 0;
+  el.textContent = "";
+  (function step(){
+    if(i <= full.length){ el.textContent = full.slice(0,i); i++; setTimeout(step, 55); }
+  })();
 }
 
 /* ---------- Scroll reveal: elementos aparecem ao rolar ---------- */
@@ -675,7 +689,7 @@ document.addEventListener("fullscreenchange", ()=>{
     const n = Math.min(70, Math.floor(w*h/22000));
     pts = Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4}));
   }
-  function color(){ return document.body.classList.contains("dark") ? "255,120,110" : "226,35,26"; }
+  function color(){ return document.body.classList.contains("dark") ? "42,154,224" : "21,115,196"; }
   function frame(){
     ctx.clearRect(0,0,w,h);
     const c = color();
@@ -702,7 +716,7 @@ function lancarConfete(){
   if(!canvas || prefersReduced()) return;
   const ctx = canvas.getContext("2d");
   canvas.width=innerWidth; canvas.height=innerHeight;
-  const cores=["#e2231a","#ff5a45","#1f5fb0","#15925e","#f0a500","#6a3fb0"];
+  const cores=["#1573c4","#16b3c9","#2a9ae0","#36b54a","#7bc62d","#44d15c"];
   const peças = Array.from({length:140},()=>({
     x:innerWidth/2+(Math.random()-.5)*200, y:innerHeight*0.3,
     vx:(Math.random()-.5)*9, vy:Math.random()*-9-3,
