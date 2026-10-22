@@ -796,6 +796,35 @@ const FAQ = [
 ];
 
 /* =========================================================================
+   CHECKLIST DE REUNIÃO — o que fazer antes, durante e depois da conversa.
+   ========================================================================= */
+const CHECKLIST = {
+  antes: [
+    "Pesquisar o cliente (setor, tamanho, o que já usa)",
+    "Definir a hipótese de dor principal",
+    "Usar o Recomendador para preparar o pitch",
+    "Preparar 1 caso de sucesso do mesmo setor",
+    "Revisar objeções prováveis e as respostas",
+    "Testar o acesso à cartilha no celular (modo offline)"
+  ],
+  durante: [
+    "Abrir com pergunta (ouvir a dor antes de falar de produto)",
+    "Descobrir o que o cliente já usa hoje",
+    "Conectar a dor a UMA solução (não despejar o portfólio)",
+    "Provar com números (3s anti-ransomware, ROI, Gartner)",
+    "Tratar objeções com a frase pronta",
+    "Oferecer prova de conceito (POC) ou visita ao show room"
+  ],
+  depois: [
+    "Enviar o resumo/proposta (one-pager em PDF)",
+    "Registrar o próximo passo com data",
+    "Agendar follow-up",
+    "Se fechou: iniciar onboarding e pensar em cross-sell",
+    "Se não fechou: anotar o motivo e manter contato"
+  ]
+};
+
+/* =========================================================================
    SHOW ROOM VIRTUAL — estações da experiência (versão digital do show room físico).
    ========================================================================= */
 const SHOWROOM = [

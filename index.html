@@ -36,7 +36,10 @@
     <span class="logo logo-fallback">SANGFOR</span>
     <span class="tag">Cartilha Comercial · Grupo Extreme</span>
   </div>
-  <input id="search" type="search" placeholder="Buscar produto, dor, objeção ou concorrente..." />
+  <div class="searchbox">
+    <input id="search" type="search" placeholder="Buscar em toda a cartilha: produto, dor, objeção, concorrente..." autocomplete="off" />
+    <div id="searchResults" class="search-results" hidden></div>
+  </div>
   <button id="voice" class="icon-btn" title="Busca por voz" aria-label="Busca por voz">🎙️</button>
   <button id="install" class="icon-btn" title="Instalar como aplicativo" aria-label="Instalar app" hidden>📲</button>
   <button id="pdf" class="icon-btn" title="Exportar/Imprimir esta aba em PDF" aria-label="Exportar PDF">📄</button>
@@ -60,6 +63,7 @@
         <button class="tab" data-view="roi"><span class="ti">💰</span>Simulador ROI</button>
         <button class="tab" data-view="proposta"><span class="ti">📝</span>Gerar Proposta</button>
         <button class="tab" data-view="jornada"><span class="ti">🗺️</span>Linha do Tempo</button>
+        <button class="tab" data-view="checklist"><span class="ti">✅</span>Checklist de Reunião</button>
         <button class="tab" data-view="pitch"><span class="ti">🎤</span>Pitch Rápido</button>
       </div>
       <div class="nav-group">
@@ -72,6 +76,7 @@
       <div class="nav-group">
         <div class="nav-title">Portfólio & argumentos</div>
         <button class="tab" data-view="produtos"><span class="ti">📦</span>Produtos</button>
+        <button class="tab" data-view="comparador"><span class="ti">⚖️</span>Comparador</button>
         <button class="tab" data-view="catalogo"><span class="ti">🧰</span>Catálogo (Modelos)</button>
         <button class="tab" data-view="dores"><span class="ti">💢</span>Dores → Solução</button>
         <button class="tab" data-view="troca"><span class="ti">🔄</span>Trocar p/ Sangfor</button>
@@ -98,9 +103,13 @@
     <main id="app"></main>
     <footer class="foot">
       <p>Cartilha interna de pré-vendas · GPS IT — Grupo Extreme · Baseada em material público da Sangfor</p>
+      <p class="foot-ver">Versão 2.0 · Atualizado em <span id="lastUpdate">—</span></p>
     </footer>
   </div>
 </div>
+
+<!-- Botão voltar ao topo -->
+<button id="toTop" class="to-top" title="Voltar ao topo" aria-label="Voltar ao topo" hidden>↑</button>
 
 <!-- Navegação inferior (mobile) -->
 <nav class="bottomnav" id="bottomnav">

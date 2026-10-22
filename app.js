@@ -391,6 +391,60 @@ function viewFavoritos() {
     </div>`).join("")}`;
 }
 
+/* ---------- CHECKLIST DE REUNIÃO ---------- */
+function viewChecklist() {
+  const bloco = (titulo, icone, itens, key) => `
+    <div class="block">
+      <p class="q"><span class="ico">${icone}</span><span>${titulo}</span></p>
+      <div class="chk-list">
+        ${itens.map((it,i)=>`<label class="chk"><input type="checkbox" data-chk="${key}-${i}"> <span>${it}</span></label>`).join("")}
+      </div>
+    </div>`;
+  return `
+  <h1>✅ Checklist de Reunião</h1>
+  <p class="lead">Um guia prático para não esquecer nada. Marque conforme avança — fica salvo neste aparelho.
+  <button class="copybtn" id="chk-reset" style="margin-left:8px">🔄 Limpar</button></p>
+  ${bloco("Antes da reunião","🗓️",CHECKLIST.antes,"antes")}
+  ${bloco("Durante a reunião","💬",CHECKLIST.durante,"durante")}
+  ${bloco("Depois da reunião","📨",CHECKLIST.depois,"depois")}`;
+}
+
+/* ---------- COMPARADOR DE PRODUTOS ---------- */
+function viewComparador() {
+  const opts = PRODUTOS.map((p,i)=>`<option value="${i}">${p.nome}</option>`).join("");
+  return `
+  <h1>⚖️ Comparador de Produtos</h1>
+  <p class="lead">Escolha dois produtos Sangfor e veja lado a lado, em linguagem simples, para orientar o cliente.</p>
+  <div class="card" style="padding:20px">
+    <div class="roi-fields">
+      <div><div class="label">Produto A</div><select id="cmp-a" class="roi-input">${opts}</select></div>
+      <div><div class="label">Produto B</div><select id="cmp-b" class="roi-input">${PRODUTOS.map((p,i)=>`<option value="${i}" ${i===1?"selected":""}>${p.nome}</option>`).join("")}</select></div>
+    </div>
+    <button id="cmp-go" class="cta" style="margin-top:16px">Comparar →</button>
+  </div>
+  <div id="cmp-result" style="margin-top:20px"></div>`;
+}
+function compararProdutos(){
+  const a = PRODUTOS[parseInt((document.getElementById("cmp-a")||{}).value,10)] || PRODUTOS[0];
+  const b = PRODUTOS[parseInt((document.getElementById("cmp-b")||{}).value,10)] || PRODUTOS[1];
+  const box = document.getElementById("cmp-result");
+  const linha = (label, va, vb) => `<tr><td><strong>${label}</strong></td><td>${va}</td><td>${vb}</td></tr>`;
+  box.innerHTML = `
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Critério</th><th>${a.nome}</th><th>${b.nome}</th></tr></thead>
+        <tbody>
+          ${linha("Resumo", a.oneliner, b.oneliner)}
+          ${linha("Para o cliente", a.pracliente||a.oquee, b.pracliente||b.oquee)}
+          ${linha("Resolve quando", (a.resolve||[]).join("; "), (b.resolve||[]).join("; "))}
+          ${linha("Números", (a.numeros||[]).join("; "), (b.numeros||[]).join("; "))}
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">Dica: use esta comparação para ajudar o cliente a entender qual solução faz mais sentido para o momento dele — ou como as duas se complementam.</div>`;
+  box.scrollIntoView({behavior:"smooth"});
+}
+
 /* ---------- RECOMENDADOR INTERATIVO ---------- */
 function viewRecomendador() {
   return `
@@ -800,6 +854,7 @@ const VIEWS = {
   inicio: viewInicio, grupo: viewGrupo, crosssell: viewCrosssell, proposta: viewProposta,
   painel: viewPainel, showroom: viewShowroom, demoataque: viewDemoAtaque,
   glossario: viewGlossario, faq: viewFaq, favoritos: viewFavoritos,
+  checklist: viewChecklist, comparador: viewComparador,
   recomendador: viewRecomendador, roi: viewRoi,
   produtos: viewProdutos, catalogo: viewCatalogo, dores: viewDores,
   troca: viewTroca, objecoes: viewObjecoes, jornada: viewJornada, pitch: viewPitch,
@@ -843,7 +898,14 @@ function removeFavoritoByIndex(i){
 
 function render(view){
   currentView = view;
-  app.innerHTML = `<div class="view">${VIEWS[view]()}</div>`;
+  const fn = VIEWS[view];
+  if(typeof fn !== "function"){
+    app.innerHTML = `<div class="view"><h1>🧭 Página não encontrada</h1>
+      <p class="lead">A seção que você tentou abrir não existe. Use o menu à esquerda para navegar.</p>
+      <button class="cta" data-goto="inicio">← Voltar ao início</button></div>`;
+    return;
+  }
+  app.innerHTML = `<div class="view">${fn()}</div>`;
   window.scrollTo({top:0,behavior:"smooth"});
   applySearch();
   animateCounters();
@@ -852,6 +914,7 @@ function render(view){
   typeTitle();
   // Globo 3D só na aba Grupo (carrega Three.js sob demanda)
   if(view === "grupo" && typeof iniciarGlobo === "function"){ iniciarGlobo(); }
+  if(view === "checklist"){ restaurarChecklist(); }
 }
 
 /* ---------- Efeito de digitação no título da home ---------- */
@@ -946,6 +1009,8 @@ const VIEW_META = {
   roi:["Ferramentas de venda","💰 Simulador ROI"],
   proposta:["Ferramentas de venda","📝 Gerar Proposta"],
   jornada:["Ferramentas de venda","🗺️ Linha do Tempo"],
+  checklist:["Ferramentas de venda","✅ Checklist de Reunião"],
+  comparador:["Portfólio & argumentos","⚖️ Comparador"],
   pitch:["Ferramentas de venda","🎤 Pitch Rápido"],
   grupo:["Grupo Extreme","🏢 Grupo Extreme"],
   crosssell:["Grupo Extreme","🔗 Cross-sell"],
@@ -1016,7 +1081,73 @@ function applySearch(){
     app.appendChild(div);
   }
 }
-search.addEventListener("input", applySearch);
+/* ---------- BUSCA GLOBAL (acha em todas as abas) ---------- */
+/* Índice de busca: cada item tem texto, a aba (view) e um rótulo para exibir. */
+function construirIndice(){
+  const idx = [];
+  const add = (view, titulo, texto) => idx.push({ view, titulo, texto: (titulo+" "+texto).toLowerCase() });
+  try{
+    PRODUTOS.forEach(p=> add("produtos", p.nome, p.oneliner+" "+p.oquee+" "+p.resolve.join(" ")));
+    DORES.forEach(d=> add("dores", d.dor, d.pain+" "+d.sol));
+    TROCAS.forEach(t=> add("troca", "Trocar: "+t.usa, t.oferta+" "+t.porque));
+    OBJECOES.forEach(o=> add("objecoes", o.obj, o.resposta));
+    BATTLECARDS.forEach(b=> add("battlecards", "Sangfor vs "+b.vs, b.area+" "+b.produto));
+    CROSSSELL.forEach(c=> add("crosssell", "Cross-sell: "+c.origem, c.oferecer.join(" ")+" "+c.gancho));
+    CASOS.forEach(c=> add("casos", c.cliente, c.setor+" "+c.desafio+" "+c.resultado));
+    DIFERENCIAIS.forEach(d=> add("diferenciais", d.t, d.d));
+    GLOSSARIO.forEach(g=> add("glossario", g.t, g.d));
+    FAQ.forEach(f=> add("faq", f.p, f.r));
+    GRUPO.forEach(g=> add("grupo", g.nome, g.foco));
+    CATALOGO_FW.forEach(m=> add("catalogo", m.modelo, m.porte+" "+(m.usuarios||"")));
+    JORNADA.forEach(j=> add("jornada", j.fase, j.objetivo));
+    SHOWROOM.forEach(s=> add("showroom", s.titulo, s.desc));
+  }catch(e){}
+  return idx;
+}
+let _indice = null;
+const searchResults = document.getElementById("searchResults");
+
+function buscaGlobal(){
+  const q = search.value.trim().toLowerCase();
+  applySearch(); // mantém o filtro da aba atual
+  if(!searchResults) return;
+  if(q.length < 2){ searchResults.hidden = true; searchResults.innerHTML = ""; return; }
+  if(!_indice) _indice = construirIndice();
+  const hits = _indice.filter(i=> i.texto.includes(q)).slice(0, 12);
+  if(!hits.length){
+    searchResults.innerHTML = `<div class="sr-empty">Nenhum resultado para "${search.value}".</div>`;
+    searchResults.hidden = false; return;
+  }
+  const nomeAba = v => (VIEW_META[v] ? VIEW_META[v][1] : v);
+  searchResults.innerHTML = hits.map(h=>`
+    <button class="sr-item" data-view="${h.view}">
+      <span class="sr-title">${h.titulo}</span>
+      <span class="sr-tab">${nomeAba(h.view)}</span>
+    </button>`).join("");
+  searchResults.hidden = false;
+}
+/* Checklist: salvar marcações no aparelho */
+app.addEventListener("change", e=>{
+  const cb = e.target.closest("[data-chk]");
+  if(cb){ try{ localStorage.setItem("chk-"+cb.dataset.chk, cb.checked?"1":""); }catch(err){} }
+});
+function restaurarChecklist(){
+  app.querySelectorAll("[data-chk]").forEach(cb=>{
+    try{ if(localStorage.getItem("chk-"+cb.dataset.chk)==="1") cb.checked = true; }catch(err){}
+  });
+}
+
+search.addEventListener("input", buscaGlobal);
+search.addEventListener("focus", ()=>{ if(search.value.trim().length>=2) buscaGlobal(); });
+if(searchResults){
+  searchResults.addEventListener("click", e=>{
+    const it = e.target.closest(".sr-item");
+    if(it){ irParaAba(it.dataset.view); searchResults.hidden = true; search.value = ""; applySearch(); }
+  });
+}
+document.addEventListener("click", e=>{
+  if(searchResults && !e.target.closest(".searchbox")) searchResults.hidden = true;
+});
 
 /* ---------- Recomendador: seleção de opções + gerar ---------- */
 app.addEventListener("click", e => {
@@ -1044,6 +1175,11 @@ app.addEventListener("click", e => {
   if(e.target.id==="pp-go"){ gerarProposta(); return; }
   if(e.target.id==="pn-go"){ calcularPainel(); return; }
   if(e.target.id==="demo-go"){ rodarDemo(); return; }
+  if(e.target.id==="cmp-go"){ compararProdutos(); return; }
+  if(e.target.id==="chk-reset"){
+    try{ Object.keys(localStorage).forEach(k=>{ if(k.startsWith("chk-")) localStorage.removeItem(k); }); }catch(err){}
+    irParaAba("checklist"); return;
+  }
 
   // ---------- Favoritos: salvar / remover ----------
   const fav = e.target.closest(".favbtn");
@@ -1331,6 +1467,19 @@ function lancarConfete(){
   }
   frame();
 }
+
+/* ---------- Botão "voltar ao topo" ---------- */
+const toTop = document.getElementById("toTop");
+if(toTop){
+  window.addEventListener("scroll", ()=>{ toTop.hidden = window.scrollY < 400; }, {passive:true});
+  toTop.addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
+}
+
+/* ---------- Data de "última atualização" (data do carregamento do conteúdo) ---------- */
+(function lastUpdate(){
+  const el = document.getElementById("lastUpdate");
+  if(el) el.textContent = new Date().toLocaleDateString("pt-BR", {day:"2-digit",month:"long",year:"numeric"});
+})();
 
 /* ---------- Início ---------- */
 irParaAba("inicio");
