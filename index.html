@@ -21,6 +21,8 @@
   </div>
 </div>
 
+<!-- Luz que segue o mouse (spotlight) -->
+<div id="spotlight"></div>
 <!-- Fundo animado (partículas/gradiente) -->
 <canvas id="bg"></canvas>
 <!-- Camada de confete -->
@@ -38,6 +40,8 @@
   <button id="voice" class="icon-btn" title="Busca por voz" aria-label="Busca por voz">🎙️</button>
   <button id="install" class="icon-btn" title="Instalar como aplicativo" aria-label="Instalar app" hidden>📲</button>
   <button id="pdf" class="icon-btn" title="Exportar/Imprimir esta aba em PDF" aria-label="Exportar PDF">📄</button>
+  <button id="narrate" class="icon-btn" title="Narrar esta aba (voz)" aria-label="Narrar">🔊</button>
+  <button id="kiosk" class="icon-btn" title="Modo Quiosque/TV (apresentação automática)" aria-label="Modo Quiosque">📺</button>
   <button id="present" class="icon-btn" title="Modo apresentação (tela cheia)" aria-label="Modo apresentação">🖥️</button>
   <button id="theme" class="icon-btn" title="Alternar modo claro/escuro" aria-label="Alternar tema">🌙</button>
 </header>
@@ -108,6 +112,7 @@
 </nav>
 
 <script src="data.js"></script>
+<script src="globe.js"></script>
 <script src="app.js"></script>
 <script>
   /* Registra o service worker para funcionar offline (PWA).

@@ -39,15 +39,53 @@ function viewInicio() {
   </div>
 
   <h2>⚡ Acesso rápido</h2>
-  <div class="quickgrid">
-    <button class="quick" data-goto="recomendador"><span class="qi">🎯</span><b>Montar reunião</b><small>Recomendador de solução</small></button>
+  <div class="bento">
+    <button class="quick bento-lg" data-goto="recomendador"><span class="qi">🎯</span><b>Montar reunião</b><small>Recomendador: 3 perguntas → pitch pronto</small></button>
     <button class="quick" data-goto="proposta"><span class="qi">📝</span><b>Gerar proposta</b><small>One-pager em PDF</small></button>
-    <button class="quick" data-goto="objecoes"><span class="qi">🛡️</span><b>Tratar objeção</b><small>Respostas prontas</small></button>
     <button class="quick" data-goto="roi"><span class="qi">💰</span><b>Calcular economia</b><small>Simulador de ROI</small></button>
-    <button class="quick" data-goto="crosssell"><span class="qi">🔗</span><b>Cross-sell do grupo</b><small>Vender na base Extreme</small></button>
+    <button class="quick bento-tall" data-goto="showroom"><span class="qi">🏛️</span><b>Show room virtual</b><small>Demonstre as soluções ao vivo, de qualquer lugar</small></button>
+    <button class="quick" data-goto="objecoes"><span class="qi">🛡️</span><b>Tratar objeção</b><small>Respostas prontas</small></button>
+    <button class="quick" data-goto="crosssell"><span class="qi">🔗</span><b>Cross-sell</b><small>Vender na base Extreme</small></button>
     <button class="quick" data-goto="battlecards"><span class="qi">⚔️</span><b>Vs. concorrente</b><small>Battlecards</small></button>
-    <button class="quick" data-goto="showroom"><span class="qi">🏛️</span><b>Show room virtual</b><small>Demonstrar ao vivo</small></button>
     <button class="quick" data-goto="glossario"><span class="qi">📖</span><b>Glossário</b><small>Termos em 1 linha</small></button>
+  </div>
+
+  <h2>🕸️ Defesa em camadas (Sangfor)</h2>
+  <div class="netdiagram">
+    <div class="nd-node nd-net">🌐<span>Internet</span></div>
+    <div class="nd-link"></div>
+    <div class="nd-node nd-fw">🛡️<span>NGFW</span><em>bloqueia 99%</em></div>
+    <div class="nd-link"></div>
+    <div class="nd-node nd-sw">🔀<span>Rede</span></div>
+    <div class="nd-link"></div>
+    <div class="nd-endpoints">
+      <div class="nd-node nd-ep">💻<span>Endpoint</span></div>
+      <div class="nd-node nd-ep">🖥️<span>Servidor</span></div>
+      <div class="nd-node nd-ep">📱<span>Mobile</span></div>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:-8px">Tráfego inspecionado por IA no perímetro e nos dispositivos — com Endpoint Secure protegendo cada ponto.</p>
+
+  <h2>🗺️ Presença GPS IT no Brasil</h2>
+  <div class="mapwrap">
+    <div class="mapbr">
+      ${[
+        {n:"Rio de Janeiro (Sede)",x:72,y:62},
+        {n:"São Paulo",x:64,y:66},
+        {n:"Ribeirão Preto",x:60,y:60},
+        {n:"Brasília",x:58,y:50}
+      ].map(f=>`<span class="mp" style="left:${f.x}%;top:${f.y}%" title="${f.n}"><i></i><b>${f.n}</b></span>`).join("")}
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="mapgrid"><defs></defs></svg>
+    </div>
+    <div class="mapinfo">
+      <div class="label">Cobertura nacional</div>
+      <ul>
+        <li><b>4 unidades:</b> RJ (sede), SP, Ribeirão Preto e Brasília</li>
+        <li><b>+90 colaboradores</b> e +30 especialistas certificados</li>
+        <li><b>Show room único</b> na América Latina</li>
+        <li>Agora com a força do <b>Grupo Extreme</b></li>
+      </ul>
+    </div>
   </div>
 
   <div class="callout">
@@ -86,7 +124,11 @@ function viewGrupo() {
   <div class="callout"><b>Por que isso importa para você:</b> a meta do grupo é saltar de R$600M para R$1,5BI até 2028.
   O caminho é o cross-sell — e a GPS IT (infra + segurança) é peça central para sustentar os projetos das outras empresas.</div>
 
-  <h2>🌐 Mapa do grupo (a GPS IT no centro das oportunidades)</h2>
+  <h2>🌐 Presença global (globo 3D)</h2>
+  <p class="lead" style="margin-bottom:10px">Arraste para girar. Pontos em verde representam presença da GPS IT no Brasil e do ecossistema Sangfor no mundo.</p>
+  <div id="globe3d" class="globe3d"></div>
+
+  <h2>🧭 Mapa do grupo (a GPS IT no centro das oportunidades)</h2>
   <p class="lead" style="margin-bottom:10px">A GPS IT se conecta a todas as empresas do grupo. Passe o mouse em cada uma para ver o foco.</p>
   <div class="orbit-wrap">
     <div class="orbit-center">${marcaEmpresa("GPS IT")}<span>GPS IT</span></div>
@@ -808,6 +850,8 @@ function render(view){
   setupScrollReveal();
   setupTilt();
   typeTitle();
+  // Globo 3D só na aba Grupo (carrega Three.js sob demanda)
+  if(view === "grupo" && typeof iniciarGlobo === "function"){ iniciarGlobo(); }
 }
 
 /* ---------- Efeito de digitação no título da home ---------- */
@@ -1086,6 +1130,62 @@ document.addEventListener("fullscreenchange", ()=>{
     presentBtn.textContent="🖥️"; presentBtn.title="Modo apresentação (tela cheia)";
   }
 });
+
+/* ---------- Spotlight (luz seguindo o mouse) ---------- */
+(function spotlight(){
+  const el = document.getElementById("spotlight");
+  if(!el || prefersReduced() || matchMedia("(pointer: coarse)").matches) return;
+  let raf;
+  window.addEventListener("mousemove", e=>{
+    el.style.opacity = "1";
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(()=>{ el.style.left = e.clientX+"px"; el.style.top = e.clientY+"px"; });
+  });
+  window.addEventListener("mouseleave", ()=>{ el.style.opacity = "0"; });
+})();
+
+/* ---------- Modo Quiosque / TV (apresentação automática) ---------- */
+const kioskBtn = document.getElementById("kiosk");
+let kioskTimer = null;
+const KIOSK_SEQ = ["inicio","grupo","painel","produtos","battlecards","casos","showroom","diferenciais"];
+let kioskIdx = 0;
+function pararKiosk(){
+  if(kioskTimer){ clearInterval(kioskTimer); kioskTimer = null; }
+  document.body.classList.remove("kiosk");
+  if(kioskBtn){ kioskBtn.textContent = "📺"; kioskBtn.title = "Modo Quiosque/TV (apresentação automática)"; }
+}
+function iniciarKiosk(){
+  document.body.classList.add("kiosk");
+  kioskBtn.textContent = "⏹️"; kioskBtn.title = "Parar modo Quiosque";
+  kioskIdx = 0; irParaAba(KIOSK_SEQ[0]);
+  kioskTimer = setInterval(()=>{
+    kioskIdx = (kioskIdx+1) % KIOSK_SEQ.length;
+    irParaAba(KIOSK_SEQ[kioskIdx]);
+  }, 8000);
+}
+if(kioskBtn) kioskBtn.addEventListener("click", ()=> kioskTimer ? pararKiosk() : iniciarKiosk());
+
+/* ---------- Narração (text-to-speech do navegador) ---------- */
+const narrateBtn = document.getElementById("narrate");
+(function setupNarrate(){
+  if(!narrateBtn) return;
+  if(!("speechSynthesis" in window)){ narrateBtn.style.display = "none"; return; }
+  let falando = false;
+  narrateBtn.addEventListener("click", ()=>{
+    if(falando){ speechSynthesis.cancel(); falando = false; narrateBtn.textContent = "🔊"; return; }
+    // lê o título + o texto de introdução da aba atual
+    const h1 = app.querySelector("h1");
+    const lead = app.querySelector(".lead, .hero p");
+    const texto = [h1&&h1.textContent, lead&&lead.textContent].filter(Boolean).join(". ")
+      .replace(/[🎯💰📝🗺️🎤🏢🔗📊🏛️📦🧰💢🔄🛡️⚔️🏆⭐📖❓🏠🎬💡]/g,"");
+    if(!texto) return;
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = "pt-BR"; u.rate = 1;
+    u.onend = ()=>{ falando = false; narrateBtn.textContent = "🔊"; };
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+    falando = true; narrateBtn.textContent = "⏸️";
+  });
+})();
 
 /* ---------- Busca por voz (Web Speech API) ---------- */
 const voiceBtn = document.getElementById("voice");
