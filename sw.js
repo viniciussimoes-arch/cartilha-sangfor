@@ -2,7 +2,7 @@
    Faz a cartilha funcionar OFFLINE (cache dos arquivos).
    IMPORTANTE: ao atualizar a cartilha, troque o número da versão em CACHE_NOME
    (ex: v1 -> v2). Isso força os aparelhos a baixarem a versão nova. */
-const CACHE_NOME = "cartilha-sangfor-v1";
+const CACHE_NOME = "cartilha-sangfor-v7";
 
 /* Arquivos essenciais para a cartilha abrir sem internet */
 const ARQUIVOS = [
@@ -14,7 +14,14 @@ const ARQUIVOS = [
   "./manifest.webmanifest",
   "./logo.png",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./logos/gps-it.png", "./logos/gps-it.jpg",
+  "./logos/eds.png", "./logos/eds.jpg",
+  "./logos/edx.png", "./logos/edx.jpg",
+  "./logos/beyond.png", "./logos/beyond.jpg",
+  "./logos/pointer.png", "./logos/pointer.jpg",
+  "./logos/bora.png", "./logos/bora.jpg",
+  "./logos/volund.png", "./logos/volund.jpg"
 ];
 
 /* Instalação: baixa e guarda os arquivos no cache */

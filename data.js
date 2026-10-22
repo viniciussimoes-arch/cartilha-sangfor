@@ -389,6 +389,50 @@ const ICONS = {
 function iconFor(cat){ return ICONS[cat] || ICONS.sec; }
 
 /* =========================================================================
+   LOGOS/MARCAS das empresas do grupo (monograma estilizado em SVG).
+   Como não temos os arquivos oficiais, geramos um "selo" com a inicial e a
+   cor de cada empresa — visual consistente e profissional. Troque por imagens
+   reais depois (basta colocar arquivos e referenciar).
+   ========================================================================= */
+const GRUPO_CORES = {
+  "GPS IT":"#1573c4", "EDS":"#2a9e5a", "EDX":"#0d8f82",
+  "Beyond":"#6a3fb0", "Pointer":"#1f5fb0", "Bora":"#e08a1e", "Volund":"#c0392b"
+};
+/* Nome-base do arquivo de logo de cada empresa (coloque na pasta "logos/").
+   Aceita .png OU .jpg automaticamente — a cartilha tenta um e, se falhar, tenta o outro.
+   Ex.: logos/gps-it.png ou logos/gps-it.jpg. Se nenhum existir, aparece o emblema. */
+const GRUPO_LOGO = {
+  "GPS IT":"logos/gps-it", "EDS":"logos/eds", "EDX":"logos/edx",
+  "Beyond":"logos/beyond", "Pointer":"logos/pointer",
+  "Bora":"logos/bora", "Volund":"logos/volund"
+};
+
+/* Gera a marca da empresa: tenta o logo real (imagem) e, se falhar, cai no
+   emblema estilizado (SVG). A troca é feita em JS pelo evento de erro da imagem. */
+function marcaEmpresa(nome){
+  const cor = GRUPO_CORES[nome] || "#1573c4";
+  const ini = nome.replace(/[^A-Za-z]/g,"").slice(0,2).toUpperCase();
+  const cor2 = "#16b3c9";
+  const base = GRUPO_LOGO[nome] || "";
+  const emblema = `<svg class="emblem" viewBox="0 0 64 64" aria-label="${nome}">
+    <defs><linearGradient id="g-${ini}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${cor}"/><stop offset="1" stop-color="${cor2}"/>
+    </linearGradient></defs>
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g-${ini})"/>
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+    <text x="32" y="41" text-anchor="middle" font-family="Poppins,Arial" font-size="24" font-weight="800" fill="#fff">${ini}</text>
+  </svg>`;
+  /* A imagem tenta .png; se falhar, tenta .jpg; se falhar de novo, some e fica o emblema.
+     Ao carregar, mostra a imagem e esconde o emblema (o SVG logo após). */
+  return `<span class="marca" data-nome="${nome}">
+    <img class="marca-logo" src="${base}.png" alt="${nome}" data-base="${base}" data-try="jpg" hidden
+         onload="this.hidden=false;this.parentElement.querySelector('.emblem').style.display='none'"
+         onerror="if(this.dataset.try==='jpg'){this.dataset.try='';this.src=this.dataset.base+'.jpg';}else{this.remove();}" />
+    ${emblema}
+  </span>`;
+}
+
+/* =========================================================================
    RECOMENDADOR — opções de dor e o que recomendar para cada uma.
    "fw:true" significa que a solução envolve firewall (mostra modelo por porte).
    ========================================================================= */
@@ -621,5 +665,92 @@ const JORNADA = [
     evitar: "Sumir após a venda — é aqui que nasce a próxima.",
     say: "Que bom que está funcionando bem! Já que você confia na Sangfor nesse ponto, faz sentido levar a mesma proteção para [outra área]? E você conhece alguém que também teria esse desafio?",
     atalho: "troca", atalhoLabel: "🔄 Trocar p/ Sangfor"
+  }
+];
+
+/* =========================================================================
+   GRUPO EXTREME — empresas do grupo e o que cada uma faz.
+   Usado pela aba "Grupo Extreme" para o time comercial conhecer o portfólio
+   completo e saber o que indicar (cross-sell). Ajuste conforme informações oficiais.
+   ========================================================================= */
+const GRUPO = [
+  { nome:"GPS IT", icone:"🛡️", cor:"sec",
+    foco:"Infraestrutura, conectividade, cibersegurança e serviços gerenciados (NOC/SOC 24x7).",
+    vende:["Data Center & Cloud","Redes (Cisco/Meraki)","Firewall & SOC (Sangfor)","Resposta a incidentes 24/7"],
+    nota:"Parceira Premier Cisco no RJ, Sangfor e +15 fabricantes. Show room na América Latina." },
+  { nome:"EDS", icone:"🏛️", cor:"cloud",
+    foco:"Transformação digital para governo e setor público.",
+    vende:["Projetos de governo digital","Modernização do setor público"],
+    nota:"Porta de entrada em órgãos públicos — base ideal para cross-sell de infra/segurança da GPS IT." },
+  { nome:"EDX", icone:"⚙️", cor:"ai",
+    foco:"Jornadas digitais e automação de processos com ServiceNow.",
+    vende:["Automação de processos (ServiceNow)","Jornadas digitais"],
+    nota:"Cliente que automatiza processos costuma precisar de infra e segurança robustas." },
+  { nome:"Beyond", icone:"💡", cor:"net",
+    foco:"Inovação e desenvolvimento de software customizado.",
+    vende:["Desenvolvimento sob medida","Projetos de inovação"],
+    nota:"Aplicações customizadas rodam melhor sobre infra/HCI confiável da GPS IT." },
+  { nome:"Pointer", icone:"📈", cor:"cloud",
+    foco:"Performance e monitoramento técnico.",
+    vende:["Monitoramento técnico","Performance de ambientes"],
+    nota:"Combina com NOC/SOC 24x7 da GPS IT para uma oferta de observabilidade completa." },
+  { nome:"Bora", icone:"🚀", cor:"net",
+    foco:"Empresa do grupo Extreme (frente de negócios digitais).",
+    vende:["Soluções digitais do grupo"],
+    nota:"Mapear sobreposição e indicação cruzada com a base da GPS IT." },
+  { nome:"Volund", icone:"🔧", cor:"ai",
+    foco:"Empresa do grupo Extreme (frente de tecnologia/serviços).",
+    vende:["Serviços de tecnologia do grupo"],
+    nota:"Mapear sinergia com os serviços gerenciados da GPS IT." }
+];
+
+/* Fatos do grupo para a aba Grupo Extreme (números de contexto) */
+const GRUPO_FATOS = [
+  { big:"R$600M", cap:"faturamento atual do grupo" },
+  { big:"R$1,5BI", cap:"meta até 2028 (cross-sell é chave)" },
+  { big:"7", cap:"empresas no grupo Extreme" },
+  { big:"+1.500", cap:"colaboradores" }
+];
+
+/* =========================================================================
+   CROSS-SELL — "o cliente de X pode comprar Y da GPS IT".
+   O coração do Projeto 1: ajuda o time a vender a GPS IT/Sangfor dentro da
+   base das outras empresas do grupo, mirando a meta de R$1,5BI.
+   ========================================================================= */
+const CROSSSELL = [
+  {
+    origem:"EDS (Governo / setor público)",
+    perfil:"Órgãos públicos, ambientes críticos, alta exigência de disponibilidade e conformidade.",
+    oferecer:["Sangfor NGFW + SOC 24/7","Sangfor HCI (base de infraestrutura)","Resposta a incidentes 24/7"],
+    gancho:"Ambiente público é alvo nº1 de ransomware e exige continuidade. Leve a segurança e a infra da GPS IT para sustentar os projetos digitais da EDS.",
+    say:"Já que vocês modernizaram o ambiente com a EDS, faz todo sentido proteger e sustentar isso com o SOC 24/7 e a infraestrutura da GPS IT. Posso te mostrar como blindamos ambientes críticos?"
+  },
+  {
+    origem:"EDX (Automação / ServiceNow)",
+    perfil:"Empresas automatizando processos — dependem de infra e rede estáveis.",
+    oferecer:["Monitoramento NOC 24x7","Redes Cisco/Meraki","Sangfor NGFW"],
+    gancho:"Processo automatizado que cai por falha de rede/infra gera prejuízo. Ofereça a sustentação da GPS IT.",
+    say:"Automação só entrega valor se a base não cai. Com o NOC 24x7 e a rede da GPS IT, garantimos que seus processos automatizados fiquem sempre no ar."
+  },
+  {
+    origem:"Beyond (Software customizado)",
+    perfil:"Clientes com aplicações sob medida que precisam rodar com desempenho e segurança.",
+    oferecer:["Sangfor HCI (virtualização)","Cloud / Data Center","Firewall de aplicação (NGFW/WAF)"],
+    gancho:"Aplicação customizada precisa de infra confiável e proteção. Posicione HCI + segurança da GPS IT.",
+    say:"Sua aplicação merece uma base à altura. Com o HCI e a segurança da GPS IT, ela roda rápida, segura e com recuperação garantida."
+  },
+  {
+    origem:"Pointer (Monitoramento / performance)",
+    perfil:"Clientes focados em performance e observabilidade do ambiente.",
+    oferecer:["SOC + NOC 24x7","Sangfor XDR (visão unificada)"],
+    gancho:"Monitorar performance + segurança no mesmo pacote é um diferencial. Una Pointer + GPS IT.",
+    say:"Já que você acompanha de perto a performance, que tal somar a visão de segurança? Com o SOC e o XDR da GPS IT, você enxerga tudo num painel só."
+  },
+  {
+    origem:"Qualquer cliente do grupo",
+    perfil:"Base instalada das 7 empresas — oportunidade de indicação cruzada.",
+    oferecer:["Diagnóstico de segurança gratuito","Show room GPS IT (experiência ao vivo)"],
+    gancho:"Ofereça um diagnóstico ou uma visita ao show room como porta de entrada de baixo atrito.",
+    say:"Temos um show room único na América Latina onde você experimenta a solução ao vivo. Topa conhecer? É uma ótima forma de ver o valor na prática, sem compromisso."
   }
 ];

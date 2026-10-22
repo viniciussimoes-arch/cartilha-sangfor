@@ -26,40 +26,77 @@
 <!-- Camada de confete -->
 <canvas id="confetti"></canvas>
 
+<!-- Barra superior (app bar) -->
 <header class="topbar">
+  <button id="menuToggle" class="icon-btn" title="Menu" aria-label="Abrir/fechar menu">☰</button>
   <div class="brand">
     <img id="logo-img" class="logo-img" src="logo.png" alt="Sangfor" />
     <span class="logo logo-fallback">SANGFOR</span>
-    <span class="tag">Cartilha Comercial</span>
+    <span class="tag">Cartilha Comercial · Grupo Extreme</span>
   </div>
   <input id="search" type="search" placeholder="Buscar produto, dor, objeção ou concorrente..." />
-  <button id="install" title="Instalar como aplicativo" aria-label="Instalar app" hidden>📲 Instalar</button>
-  <button id="pdf" title="Exportar/Imprimir esta aba em PDF" aria-label="Exportar PDF">📄 PDF</button>
-  <button id="present" title="Modo apresentação (tela cheia)" aria-label="Modo apresentação">🖥️</button>
-  <button id="theme" title="Alternar modo claro/escuro" aria-label="Alternar tema">🌙</button>
+  <button id="install" class="icon-btn" title="Instalar como aplicativo" aria-label="Instalar app" hidden>📲</button>
+  <button id="pdf" class="icon-btn" title="Exportar/Imprimir esta aba em PDF" aria-label="Exportar PDF">📄</button>
+  <button id="present" class="icon-btn" title="Modo apresentação (tela cheia)" aria-label="Modo apresentação">🖥️</button>
+  <button id="theme" class="icon-btn" title="Alternar modo claro/escuro" aria-label="Alternar tema">🌙</button>
 </header>
 
-<nav class="tabs" id="tabs">
-  <button class="tab active" data-view="inicio">🏠 Início</button>
-  <button class="tab" data-view="recomendador">🎯 Recomendador</button>
-  <button class="tab" data-view="roi">💰 Simulador ROI</button>
-  <button class="tab" data-view="produtos">📦 Produtos</button>
-  <button class="tab" data-view="catalogo">🧰 Catálogo (Modelos)</button>
-  <button class="tab" data-view="dores">💢 Dores → Solução</button>
-  <button class="tab" data-view="troca">🔄 Trocar p/ Sangfor</button>
-  <button class="tab" data-view="objecoes">🛡️ Objeções</button>
-  <button class="tab" data-view="battlecards">⚔️ Battlecards</button>
-  <button class="tab" data-view="jornada">🗺️ Linha do Tempo</button>
-  <button class="tab" data-view="pitch">🎤 Pitch Rápido</button>
-  <button class="tab" data-view="casos">🏆 Casos de Sucesso</button>
-  <button class="tab" data-view="diferenciais">⭐ Diferenciais</button>
+<div class="shell">
+  <!-- Menu lateral agrupado -->
+  <aside class="sidebar" id="sidebar">
+    <nav id="tabs">
+      <div class="nav-group">
+        <div class="nav-title">Visão geral</div>
+        <button class="tab active" data-view="inicio"><span class="ti">🏠</span>Início</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Ferramentas de venda</div>
+        <button class="tab" data-view="recomendador"><span class="ti">🎯</span>Recomendador</button>
+        <button class="tab" data-view="roi"><span class="ti">💰</span>Simulador ROI</button>
+        <button class="tab" data-view="proposta"><span class="ti">📝</span>Gerar Proposta</button>
+        <button class="tab" data-view="jornada"><span class="ti">🗺️</span>Linha do Tempo</button>
+        <button class="tab" data-view="pitch"><span class="ti">🎤</span>Pitch Rápido</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Grupo Extreme</div>
+        <button class="tab" data-view="grupo"><span class="ti">🏢</span>Grupo Extreme</button>
+        <button class="tab" data-view="crosssell"><span class="ti">🔗</span>Cross-sell</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Portfólio & argumentos</div>
+        <button class="tab" data-view="produtos"><span class="ti">📦</span>Produtos</button>
+        <button class="tab" data-view="catalogo"><span class="ti">🧰</span>Catálogo (Modelos)</button>
+        <button class="tab" data-view="dores"><span class="ti">💢</span>Dores → Solução</button>
+        <button class="tab" data-view="troca"><span class="ti">🔄</span>Trocar p/ Sangfor</button>
+        <button class="tab" data-view="objecoes"><span class="ti">🛡️</span>Objeções</button>
+        <button class="tab" data-view="battlecards"><span class="ti">⚔️</span>Battlecards</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Provas & diferenciais</div>
+        <button class="tab" data-view="casos"><span class="ti">🏆</span>Casos de Sucesso</button>
+        <button class="tab" data-view="diferenciais"><span class="ti">⭐</span>Diferenciais</button>
+      </div>
+    </nav>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="content">
+    <div class="crumb" id="crumb"></div>
+    <main id="app"></main>
+    <footer class="foot">
+      <p>Cartilha interna de pré-vendas · GPS IT — Grupo Extreme · Baseada em material público da Sangfor</p>
+    </footer>
+  </div>
+</div>
+
+<!-- Navegação inferior (mobile) -->
+<nav class="bottomnav" id="bottomnav">
+  <button data-view="inicio"><span>🏠</span>Início</button>
+  <button data-view="recomendador"><span>🎯</span>Recomendar</button>
+  <button data-view="proposta"><span>📝</span>Proposta</button>
+  <button data-view="crosssell"><span>🔗</span>Cross-sell</button>
+  <button data-view="produtos"><span>📦</span>Produtos</button>
 </nav>
-
-<main id="app"></main>
-
-<footer class="foot">
-  <p>Cartilha interna de pré-vendas · Baseada em material público da Sangfor · Para o time comercial</p>
-</footer>
 
 <script src="data.js"></script>
 <script src="app.js"></script>
