@@ -754,3 +754,57 @@ const CROSSSELL = [
     say:"Temos um show room único na América Latina onde você experimenta a solução ao vivo. Topa conhecer? É uma ótima forma de ver o valor na prática, sem compromisso."
   }
 ];
+
+/* =========================================================================
+   GLOSSÁRIO — termos técnicos em linguagem simples (para o time não travar).
+   ========================================================================= */
+const GLOSSARIO = [
+  { t:"NGFW / NGAF", d:"Firewall de nova geração: o 'porteiro inteligente' da rede, que inspeciona o tráfego e barra ameaças com IA." },
+  { t:"Firewall", d:"Barreira que controla o que entra e sai da rede da empresa, bloqueando acessos indevidos." },
+  { t:"Ransomware", d:"Vírus que 'sequestra' os dados (criptografa) e exige resgate. A maior dor de segurança das empresas hoje." },
+  { t:"Endpoint", d:"Qualquer dispositivo final: computador, notebook, servidor. 'Endpoint Security' protege esses aparelhos." },
+  { t:"EDR / EPP", d:"Proteção moderna de endpoint: detecta e responde a ameaças (EDR) além do antivírus tradicional (EPP)." },
+  { t:"SASE", d:"Segurança de acesso na nuvem: junta várias proteções num só agente, ideal para home office e filiais." },
+  { t:"ZTNA / Zero Trust", d:"'Confiança zero': ninguém acessa nada sem ser verificado, mesmo dentro da rede. Mais seguro que VPN." },
+  { t:"SD-WAN", d:"Tecnologia que conecta filiais pela internet de forma inteligente, otimizando banda e custo (ex: Meraki MX)." },
+  { t:"HCI", d:"Infraestrutura hiperconvergente: junta servidores, armazenamento e rede num só sistema. Alternativa à VMware." },
+  { t:"VMware / Broadcom", d:"Software líder de virtualização; após a compra pela Broadcom, ficou mais caro — abre espaço para o Sangfor HCI." },
+  { t:"XDR", d:"Central que junta os alertas de rede e dispositivos num painel só, para responder a ataques mais rápido." },
+  { t:"SOC", d:"Centro de operações de segurança: equipe que monitora e responde a ameaças (a GPS IT tem SOC 24x7)." },
+  { t:"NOC", d:"Centro de operações de rede: equipe que monitora a infraestrutura 24x7 para evitar quedas." },
+  { t:"MDR", d:"Segurança como serviço: especialistas monitoram a empresa 24/7, sem ela precisar montar equipe própria." },
+  { t:"TCO", d:"Custo total de propriedade: o gasto real em alguns anos (licença + hardware + suporte), não só o preço de compra." },
+  { t:"POC", d:"Prova de conceito: um teste da solução no cliente, sem compromisso, para provar o valor antes da compra." },
+  { t:"Data Center", d:"Local (físico ou em nuvem) onde ficam os servidores e sistemas da empresa." },
+  { t:"VPN", d:"Túnel de acesso remoto à rede da empresa. Tecnologia mais antiga que o SASE/ZTNA." },
+  { t:"Cross-sell", d:"Vender um produto adicional a quem já é cliente (ex: cliente da EDS comprar segurança da GPS IT)." },
+  { t:"Cloud Computing", d:"Uso de servidores e serviços pela internet, sem precisar de equipamento próprio." }
+];
+
+/* =========================================================================
+   FAQ COMERCIAL — perguntas que o cliente sempre faz, com resposta pronta.
+   ========================================================================= */
+const FAQ = [
+  { p:"A Sangfor é confiável? É marca chinesa.", r:"Sim. É reconhecida pelo Gartner (Magic Quadrant) e Frost & Sullivan, tem +100.000 clientes em 100+ países, +3.000 patentes e certificações independentes (CyberRatings, OPSWAT). Posso passar clientes de referência e fazer um teste sem compromisso." },
+  { p:"Por que trocar minha VMware?", r:"Depois da Broadcom, o licenciamento ficou mais caro e menos flexível. O Sangfor HCI oferece licença perpétua OU assinatura, migração assistida e, em casos reais, 20–30% de economia — com infra e segurança no mesmo sistema." },
+  { p:"Qual a diferença para o Fortinet / Palo Alto?", r:"Entregamos as mesmas funções essenciais, com um diferencial: firewall e proteção de endpoint do mesmo fabricante se defendem juntos, bloqueando ransomware em 3 segundos — normalmente com custo total menor." },
+  { p:"Vocês dão suporte? E se der problema?", r:"Sim — a GPS IT tem NOC e SOC 24x7, equipe de projetos e engenharia, e abertura de chamado direto com o fabricante. Um único responsável, sem marcas jogando a culpa entre si." },
+  { p:"Quanto tempo leva para implementar?", r:"Depende do escopo, mas trabalhamos com implementação ágil e provas de conceito que ficam prontas em semanas. Dá para começar com um piloto e expandir." },
+  { p:"Vocês só vendem ou acompanham depois?", r:"Acompanhamos. Nosso modelo é consultoria + implementação + suporte contínuo, para garantir a sustentação e a evolução tecnológica do ambiente." },
+  { p:"Posso ver a solução funcionando antes de comprar?", r:"Sim! Temos um show room único na América Latina onde você experimenta as soluções ao vivo, além de provas de conceito no seu próprio ambiente." },
+  { p:"A GPS IT é grande o suficiente para meu projeto?", r:"Somos uma integradora desde 2007, com +1000 projetos entregues, e agora fazemos parte do Grupo Extreme (R$600M, +1.500 colaboradores). Temos porte e experiência para ambientes críticos, inclusive setor público." }
+];
+
+/* =========================================================================
+   SHOW ROOM VIRTUAL — estações da experiência (versão digital do show room físico).
+   ========================================================================= */
+const SHOWROOM = [
+  { icone:"🛡️", cor:"sec", titulo:"Estação de Cibersegurança", desc:"Firewall Sangfor NGFW, Endpoint e SOC 24x7 em ação. Veja a defesa em camadas protegendo a empresa.",
+    demo:"Simulação: um ataque de ransomware sendo detectado e bloqueado em 3 segundos.", linkDemo:true },
+  { icone:"☁️", cor:"cloud", titulo:"Estação de Infraestrutura", desc:"Sangfor HCI substituindo a VMware: computação, armazenamento e rede num só sistema, com recuperação de desastres.",
+    demo:"Painel de virtualização e migração assistida a partir da VMware." },
+  { icone:"🔗", cor:"net", titulo:"Estação de Redes & SD-WAN", desc:"Conectividade Cisco e Meraki, com SD-WAN ligando filiais de forma inteligente.",
+    demo:"Case real de SD-WAN com Meraki MX conectando múltiplas unidades." },
+  { icone:"🖥️", cor:"ai", titulo:"Estação de Monitoramento (NOC/SOC)", desc:"Central de operações 24x7: monitoramento proativo de rede e resposta a incidentes.",
+    demo:"Visão de um painel de operações com alertas e resposta em tempo real." }
+];

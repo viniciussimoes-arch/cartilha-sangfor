@@ -38,12 +38,24 @@ function viewInicio() {
     <div class="stat"><div class="big" data-count="3000" data-prefix="+" data-sep="true">0</div><div class="cap">pedidos de patente (inovação)</div></div>
   </div>
 
+  <h2>⚡ Acesso rápido</h2>
+  <div class="quickgrid">
+    <button class="quick" data-goto="recomendador"><span class="qi">🎯</span><b>Montar reunião</b><small>Recomendador de solução</small></button>
+    <button class="quick" data-goto="proposta"><span class="qi">📝</span><b>Gerar proposta</b><small>One-pager em PDF</small></button>
+    <button class="quick" data-goto="objecoes"><span class="qi">🛡️</span><b>Tratar objeção</b><small>Respostas prontas</small></button>
+    <button class="quick" data-goto="roi"><span class="qi">💰</span><b>Calcular economia</b><small>Simulador de ROI</small></button>
+    <button class="quick" data-goto="crosssell"><span class="qi">🔗</span><b>Cross-sell do grupo</b><small>Vender na base Extreme</small></button>
+    <button class="quick" data-goto="battlecards"><span class="qi">⚔️</span><b>Vs. concorrente</b><small>Battlecards</small></button>
+    <button class="quick" data-goto="showroom"><span class="qi">🏛️</span><b>Show room virtual</b><small>Demonstrar ao vivo</small></button>
+    <button class="quick" data-goto="glossario"><span class="qi">📖</span><b>Glossário</b><small>Termos em 1 linha</small></button>
+  </div>
+
   <div class="callout">
-    <b>Como usar esta cartilha em 3 passos:</b>
+    <b>Como usar em 3 passos:</b>
     <ol style="margin:8px 0 0">
-      <li><b>Ouça a dor</b> do cliente → vá na aba <b>Dores → Solução</b>.</li>
-      <li><b>Descubra o que ele já usa</b> → vá na aba <b>Trocar p/ Sangfor</b> para propor a migração certa.</li>
-      <li><b>Se travar numa objeção</b> → vá na aba <b>Objeções</b> e use a frase pronta.</li>
+      <li><b>Ouça a dor</b> do cliente → use o <b>Recomendador</b> ou a aba <b>Dores → Solução</b>.</li>
+      <li><b>Descubra o que ele já usa</b> → <b>Trocar p/ Sangfor</b> ou <b>Cross-sell</b> (base do grupo).</li>
+      <li><b>Monte a oferta</b> → <b>Gerar Proposta</b> + <b>Simulador ROI</b>, e trate objeções com a frase pronta.</li>
     </ol>
   </div>
 
@@ -178,6 +190,163 @@ function gerarProposta(){
     <div class="callout"><b>Pronto!</b> Clique em <b>📄 PDF</b> (topo) e escolha "Salvar como PDF" para enviar ao cliente. Você pode editar os campos acima e gerar novamente.</div>`;
   box.scrollIntoView({behavior:"smooth"});
   lancarConfete();
+}
+
+/* ---------- PAINEL DO GRUPO (simulador de meta R$1,5BI) ---------- */
+function viewPainel() {
+  return `
+  <h1>📊 Painel do Grupo — rumo a R$1,5BI</h1>
+  <p class="lead">Conecte o seu dia a dia à meta do Grupo Extreme. Veja o tamanho do desafio e simule
+  quantas vendas são necessárias. Ferramenta de visão estratégica (estimativas para orientação).</p>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="big" data-count="600" data-prefix="R$" data-suffix="M">0</div><div class="cap">faturamento atual</div></div>
+    <div class="stat"><div class="big" data-count="1500" data-prefix="R$" data-suffix="M">0</div><div class="cap">meta até 2028</div></div>
+    <div class="stat"><div class="big" data-count="900" data-prefix="R$" data-suffix="M">0</div><div class="cap">crescimento necessário</div></div>
+    <div class="stat"><div class="big" data-count="7">0</div><div class="cap">empresas somando forças</div></div>
+  </div>
+
+  <div class="card" style="padding:24px">
+    <h3 style="margin-top:0">🧮 Simulador de meta</h3>
+    <p class="lead" style="margin-bottom:12px">Quanto falta para a meta e quantos negócios isso representa?</p>
+    <div class="roi-fields">
+      <div><div class="label">Meta de crescimento a cobrir (R$ milhões)</div><input id="pn-meta" class="roi-input" type="number" value="900" /></div>
+      <div><div class="label">Ticket médio por venda (R$ mil)</div><input id="pn-ticket" class="roi-input" type="number" value="150" placeholder="Ex: 150" /></div>
+    </div>
+    <button id="pn-go" class="cta" style="margin-top:18px">Calcular →</button>
+    <div id="pn-result" style="margin-top:16px"></div>
+  </div>
+
+  <div class="callout"><b>Use na conversa interna:</b> mostrar que você pensa na meta do grupo (e não só na venda isolada)
+  é exatamente o tipo de visão que diferencia um profissional. O cross-sell entre as 7 empresas é o motor desse crescimento.</div>`;
+}
+function calcularPainel(){
+  const meta = parseFloat((document.getElementById("pn-meta")||{}).value);   // em milhões
+  const ticket = parseFloat((document.getElementById("pn-ticket")||{}).value); // em mil
+  const box = document.getElementById("pn-result");
+  if(!meta || !ticket || meta<=0 || ticket<=0){ box.innerHTML = `<div class="callout">Informe a meta e o ticket médio (maiores que zero).</div>`; return; }
+  const vendas = Math.ceil((meta*1000)/ticket);       // meta em mil / ticket em mil
+  const porAno = Math.ceil(vendas/4);                 // ~4 anos até 2028
+  const porMes = Math.ceil(porAno/12);
+  box.innerHTML = `
+    <div class="box sol"><span class="bt">Resultado estimado</span>
+      Para cobrir <b>R$${meta}M</b> com ticket médio de <b>R$${ticket} mil</b>, seriam cerca de
+      <b>${vendas.toLocaleString("pt-BR")} vendas</b> no total — aproximadamente
+      <b>${porAno.toLocaleString("pt-BR")}/ano</b> ou <b>${porMes.toLocaleString("pt-BR")}/mês</b> no grupo.
+      O cross-sell entre as 7 empresas é o caminho mais rápido para esse volume.
+    </div>`;
+}
+
+/* ---------- SHOW ROOM VIRTUAL ---------- */
+function viewShowroom() {
+  return `
+  <div class="hero"><div class="blob b1"></div><div class="blob b2"></div>
+    <h1>🏛️ Show Room Virtual</h1>
+    <p>A GPS IT tem um show room físico único na América Latina. Esta é a versão digital: leve a experiência
+    ao cliente de qualquer lugar. Explore as estações e demonstre as soluções ao vivo.</p>
+  </div>
+  <div class="grid">
+    ${SHOWROOM.map(s=>`
+      <div class="card icon-${s.cor}" data-search="${txt(s.titulo+' '+s.desc)}">
+        <div style="font-size:40px;line-height:1">${s.icone}</div>
+        <span class="pill ${s.cor}">Estação</span>
+        <h3>${s.titulo}</h3>
+        <p class="one">${s.desc}</p>
+        <div class="label">🎬 Demonstração</div>
+        <div>${s.demo}</div>
+        ${s.linkDemo ? `<button class="cta" data-goto="demoataque" style="margin-top:12px;font-size:13px;padding:9px 16px">▶ Ver ataque bloqueado em 3s</button>` : ""}
+      </div>`).join("")}
+  </div>
+  <div class="callout"><b>Dica:</b> use o <b>🖥️ Modo Apresentação</b> para mostrar o show room virtual ao cliente em tela cheia.</div>`;
+}
+
+/* ---------- DEMONSTRAÇÃO DE ATAQUE (ransomware bloqueado em 3s) ---------- */
+function viewDemoAtaque() {
+  return `
+  <h1>🎬 Demonstração: Ransomware bloqueado em 3 segundos</h1>
+  <p class="lead">Uma simulação visual para mostrar ao cliente, de forma simples, como a Sangfor age.
+  Clique em iniciar e narre enquanto a animação roda.</p>
+  <div class="demo-stage" id="demoStage">
+    <div class="demo-line">
+      <div class="demo-node n-attacker">😈<span>Atacante</span></div>
+      <div class="demo-packet" id="demoPacket">🔒</div>
+      <div class="demo-node n-fw">🛡️<span>Sangfor NGFW</span></div>
+      <div class="demo-node n-pc">💻<span>Empresa</span></div>
+    </div>
+    <div class="demo-status" id="demoStatus">Pronto para iniciar a simulação.</div>
+    <div class="demo-timer" id="demoTimer">0.0s</div>
+    <button id="demo-go" class="cta">▶ Iniciar simulação</button>
+  </div>
+  <div class="callout"><b>Como narrar:</b> "O ataque tenta entrar... o firewall Sangfor detecta na hora...
+  e em <b>3 segundos</b> o ransomware é neutralizado — e, se algo for criptografado, os arquivos são recuperados."</div>`;
+}
+function rodarDemo(){
+  const status = document.getElementById("demoStatus");
+  const timer = document.getElementById("demoTimer");
+  const packet = document.getElementById("demoPacket");
+  const stage = document.getElementById("demoStage");
+  const btn = document.getElementById("demo-go");
+  if(!status) return;
+  btn.disabled = true;
+  stage.classList.remove("blocked"); stage.classList.add("running");
+  status.textContent = "⚠️ Ataque detectado! Analisando...";
+  packet.style.animation = "none"; void packet.offsetWidth; packet.style.animation = "";
+  let t = 0; const ini = performance.now();
+  const iv = setInterval(()=>{ t = (performance.now()-ini)/1000; if(timer) timer.textContent = t.toFixed(1)+"s"; }, 50);
+  setTimeout(()=>{
+    clearInterval(iv);
+    if(timer) timer.textContent = "3.0s";
+    stage.classList.remove("running"); stage.classList.add("blocked");
+    status.innerHTML = "✅ <b>Ransomware bloqueado em 3 segundos!</b> Ameaça neutralizada, dados protegidos.";
+    btn.disabled = false;
+    lancarConfete();
+  }, 3000);
+}
+
+/* ---------- GLOSSÁRIO ---------- */
+function viewGlossario() {
+  return `
+  <h1>📖 Glossário</h1>
+  <p class="lead">Os termos técnicos em linguagem simples, para você nunca travar na frente do cliente. Use a busca no topo.</p>
+  <div class="grid">
+    ${GLOSSARIO.map(g=>`
+      <div class="card" data-search="${txt(g.t+' '+g.d)}">
+        <h3>${g.t}</h3>
+        <div>${g.d}</div>
+      </div>`).join("")}
+  </div>`;
+}
+
+/* ---------- FAQ COMERCIAL ---------- */
+function viewFaq() {
+  return `
+  <h1>❓ FAQ Comercial</h1>
+  <p class="lead">As perguntas que o cliente sempre faz — com resposta pronta para copiar e usar.</p>
+  ${FAQ.map(f=>`
+    <div class="block" data-search="${txt(f.p+' '+f.r)}">
+      <p class="q"><span class="ico">❓</span><span>${f.p}</span></p>
+      <div class="box say"><span class="bt">🎤 Responda assim</span>${copyable(f.r)}</div>
+    </div>`).join("")}`;
+}
+
+/* ---------- FAVORITOS ---------- */
+function viewFavoritos() {
+  const favs = getFavoritos();
+  if(!favs.length){
+    return `
+    <h1>⭐ Favoritos</h1>
+    <p class="lead">Você ainda não salvou nada. Em qualquer frase pronta (Dores, Objeções, FAQ, Cross-sell...),
+    clique no botão <b>⭐ Salvar</b> para guardá-la aqui e acessar rápido na hora da conversa.</p>
+    <div class="callout">Os favoritos ficam salvos neste aparelho/navegador.</div>`;
+  }
+  return `
+  <h1>⭐ Favoritos</h1>
+  <p class="lead">Suas frases salvas, prontas para copiar ou enviar. (${favs.length} ${favs.length===1?"item":"itens"})</p>
+  ${favs.map((f,i)=>`
+    <div class="block">
+      <div class="box say"><span class="bt">🎤 Frase salva</span>${copyable(f)}</div>
+      <button class="copybtn" data-unfav="${i}" style="margin-top:4px">🗑️ Remover dos favoritos</button>
+    </div>`).join("")}`;
 }
 
 /* ---------- RECOMENDADOR INTERATIVO ---------- */
@@ -587,6 +756,8 @@ function viewDiferenciais() {
 
 const VIEWS = {
   inicio: viewInicio, grupo: viewGrupo, crosssell: viewCrosssell, proposta: viewProposta,
+  painel: viewPainel, showroom: viewShowroom, demoataque: viewDemoAtaque,
+  glossario: viewGlossario, faq: viewFaq, favoritos: viewFavoritos,
   recomendador: viewRecomendador, roi: viewRoi,
   produtos: viewProdutos, catalogo: viewCatalogo, dores: viewDores,
   troca: viewTroca, objecoes: viewObjecoes, jornada: viewJornada, pitch: viewPitch,
@@ -607,8 +778,25 @@ function copyable(text){
     <span class="copyactions">
       <button class="copybtn" data-copy="${enc}" title="Copiar frase">📋 Copiar</button>
       <a class="wabtn" href="https://wa.me/?text=${enc}" target="_blank" rel="noopener" title="Compartilhar no WhatsApp">🟢 WhatsApp</a>
+      <button class="favbtn" data-fav="${enc}" title="Salvar nos favoritos">⭐ Salvar</button>
     </span>
   </span>`;
+}
+
+/* ---------- Favoritos (salvos no aparelho) ---------- */
+function getFavoritos(){
+  try{ return JSON.parse(localStorage.getItem("cartilha-favs") || "[]"); }catch(e){ return []; }
+}
+function setFavoritos(arr){
+  try{ localStorage.setItem("cartilha-favs", JSON.stringify(arr)); }catch(e){}
+}
+function addFavorito(texto){
+  const favs = getFavoritos();
+  if(!favs.includes(texto)){ favs.push(texto); setFavoritos(favs); }
+}
+function removeFavoritoByIndex(i){
+  const favs = getFavoritos();
+  favs.splice(i,1); setFavoritos(favs);
 }
 
 function render(view){
@@ -717,6 +905,12 @@ const VIEW_META = {
   pitch:["Ferramentas de venda","🎤 Pitch Rápido"],
   grupo:["Grupo Extreme","🏢 Grupo Extreme"],
   crosssell:["Grupo Extreme","🔗 Cross-sell"],
+  painel:["Grupo Extreme","📊 Painel do Grupo"],
+  showroom:["Grupo Extreme","🏛️ Show Room Virtual"],
+  demoataque:["Grupo Extreme","🎬 Demonstração de Ataque"],
+  glossario:["Apoio & conhecimento","📖 Glossário"],
+  faq:["Apoio & conhecimento","❓ FAQ Comercial"],
+  favoritos:["Apoio & conhecimento","⭐ Favoritos"],
   produtos:["Portfólio & argumentos","📦 Produtos"],
   catalogo:["Portfólio & argumentos","🧰 Catálogo (Modelos)"],
   dores:["Portfólio & argumentos","💢 Dores → Solução"],
@@ -804,6 +998,19 @@ app.addEventListener("click", e => {
   }
   if(e.target.id==="roi-go"){ calcularRoi(); return; }
   if(e.target.id==="pp-go"){ gerarProposta(); return; }
+  if(e.target.id==="pn-go"){ calcularPainel(); return; }
+  if(e.target.id==="demo-go"){ rodarDemo(); return; }
+
+  // ---------- Favoritos: salvar / remover ----------
+  const fav = e.target.closest(".favbtn");
+  if(fav){
+    addFavorito(decodeURIComponent(fav.dataset.fav));
+    const o = fav.textContent; fav.textContent = "✅ Salvo!"; fav.classList.add("ok");
+    setTimeout(()=>{ fav.textContent = o; fav.classList.remove("ok"); }, 1500);
+    return;
+  }
+  const unfav = e.target.closest("[data-unfav]");
+  if(unfav){ removeFavoritoByIndex(parseInt(unfav.dataset.unfav,10)); irParaAba("favoritos"); return; }
 
   // ---------- Atalho da Linha do Tempo: pular para outra aba ----------
   const goto = e.target.closest("[data-goto]");
@@ -879,6 +1086,42 @@ document.addEventListener("fullscreenchange", ()=>{
     presentBtn.textContent="🖥️"; presentBtn.title="Modo apresentação (tela cheia)";
   }
 });
+
+/* ---------- Busca por voz (Web Speech API) ---------- */
+const voiceBtn = document.getElementById("voice");
+(function setupVoice(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!voiceBtn) return;
+  if(!SR){ voiceBtn.style.display = "none"; return; } // navegador não suporta: esconde
+  const rec = new SR();
+  rec.lang = "pt-BR"; rec.interimResults = false; rec.maxAlternatives = 1;
+  let ouvindo = false;
+  voiceBtn.addEventListener("click", ()=>{
+    if(ouvindo){ rec.stop(); return; }
+    try{ rec.start(); }catch(e){}
+  });
+  rec.onstart = ()=>{ ouvindo = true; voiceBtn.classList.add("listening"); voiceBtn.textContent = "🔴"; };
+  rec.onend = ()=>{ ouvindo = false; voiceBtn.classList.remove("listening"); voiceBtn.textContent = "🎙️"; };
+  rec.onerror = ()=>{ ouvindo = false; voiceBtn.classList.remove("listening"); voiceBtn.textContent = "🎙️"; };
+  rec.onresult = (ev)=>{
+    const texto = ev.results[0][0].transcript || "";
+    search.value = texto;
+    applySearch();
+    // tenta pular direto para uma aba citada por voz
+    const t = texto.toLowerCase();
+    for(const [v,meta] of Object.entries(VIEW_META)){
+      const nome = meta[1].toLowerCase().replace(/[^\wà-ú ]/g,"");
+      if(t.includes(v) || (nome && t.includes(nome.split(" ").slice(-1)[0]))){ /* heurística simples */ }
+    }
+    if(t.includes("objeç")) irParaAba("objecoes");
+    else if(t.includes("roi")||t.includes("economia")||t.includes("custo")) irParaAba("roi");
+    else if(t.includes("proposta")) irParaAba("proposta");
+    else if(t.includes("cross")||t.includes("grupo")) irParaAba("crosssell");
+    else if(t.includes("battle")||t.includes("concorrente")||t.includes("fortinet")||t.includes("vmware")) irParaAba("battlecards");
+    else if(t.includes("produto")) irParaAba("produtos");
+    else if(t.includes("glossár")||t.includes("significa")) irParaAba("glossario");
+  };
+})();
 
 /* ---------- PWA: botão "Instalar app" ---------- */
 const installBtn = document.getElementById("install");
