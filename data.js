@@ -154,13 +154,70 @@ const CATALOGO_FW = [
     novo: "1.200/s", proxyUser: "500", endpointClient: "250",
     specsCompletas: true
   },
-  { modelo: "M5200-AC-I", porte: "Pequena/Média empresa", usuarios: "a confirmar", specsCompletas: false },
-  { modelo: "M5400-AC-I", porte: "Média empresa", usuarios: "a confirmar", specsCompletas: false },
-  { modelo: "M5500-AC-I", porte: "Média empresa", usuarios: "a confirmar", specsCompletas: false },
-  { modelo: "M5500-SK-AC-I", porte: "Média empresa", usuarios: "a confirmar", specsCompletas: false },
-  { modelo: "M5600-AC-I", porte: "Média/Grande empresa", usuarios: "a confirmar", specsCompletas: false },
-  { modelo: "M5800-SK-AC-I", porte: "Grande empresa", usuarios: "a confirmar", specsCompletas: false },
-  { modelo: "M6000-AC-I", porte: "Grande empresa / Data center", usuarios: "a confirmar", specsCompletas: false }
+  {
+    modelo: "M5200-AC-I", porte: "Pequena empresa",
+    usuarios: "2.000", netThroughput: "3 Gbps", appThroughput: "400 Mbps",
+    bandwidth: "200 Mbps", ipsecVpn: "70 Mb", concurrent: "180.000",
+    novo: "4.000/s", proxyUser: "1.000", endpointClient: "500",
+    specsCompletas: true
+  },
+  {
+    modelo: "M5400-AC-I", porte: "Média empresa",
+    usuarios: "3.000", netThroughput: "3,6 Gbps", appThroughput: "600 Mbps",
+    bandwidth: "300 Mbps", ipsecVpn: "150 Mbps", concurrent: "300.000",
+    novo: "6.000/s", proxyUser: "1.500", endpointClient: "800",
+    specsCompletas: true
+  },
+  {
+    modelo: "M5500-AC-I", porte: "Média empresa",
+    usuarios: "5.000", netThroughput: "5,8 Gbps", appThroughput: "1 Gbps",
+    bandwidth: "500 Mbps", ipsecVpn: "300 Mbps", concurrent: "500.000",
+    novo: "10.000/s", proxyUser: "2.600", endpointClient: "1.800",
+    specsCompletas: true
+  },
+  {
+    modelo: "M5500-SK-AC-I", porte: "Média empresa",
+    usuarios: "1.000", netThroughput: "5,8 Gbps", appThroughput: "750 Mbps",
+    bandwidth: "500 Mbps", ipsecVpn: "120 Mbps", concurrent: "500.000",
+    novo: "10.000/s", proxyUser: "1.000", endpointClient: "1.000",
+    specsCompletas: true
+  },
+  {
+    modelo: "M5600-AC-I", porte: "Média/Grande empresa",
+    usuarios: "6.000", netThroughput: "8 Gbps", appThroughput: "1,2 Gbps",
+    bandwidth: "600 Mbps", ipsecVpn: "300 Mbps", concurrent: "600.000",
+    novo: "12.000/s", proxyUser: "3.000", endpointClient: "2.500",
+    specsCompletas: true
+  },
+  {
+    modelo: "M5800-SK-AC-I", porte: "Grande empresa",
+    usuarios: "2.000", netThroughput: "10 Gbps", appThroughput: "1,5 Gbps",
+    bandwidth: "1 Gbps", ipsecVpn: "200 Mbps", concurrent: "600.000",
+    novo: "14.000/s", proxyUser: "1.500", endpointClient: "1.500",
+    specsCompletas: true
+  },
+  {
+    modelo: "M6000-AC-I", porte: "Grande empresa / Data center",
+    usuarios: "15.000", netThroughput: "8 Gbps", appThroughput: "2 Gbps",
+    bandwidth: "1 Gbps", ipsecVpn: "350 Mbps", concurrent: "1.000.000",
+    novo: "20.000/s", proxyUser: "4.000", endpointClient: "10.000",
+    hardware: "2U · RAM 8G x2 · 128G SSD + 960G SSD · 6x1GbE + 2x10GbE SFP+ · fonte dupla · 150W · 18,5 kg",
+    specsCompletas: true
+  },
+  {
+    modelo: "M9000-AC-I", porte: "Data center / Grande porte",
+    usuarios: "50.000", netThroughput: "20 Gbps", appThroughput: "10 Gbps",
+    bandwidth: "5 Gbps", ipsecVpn: "—", concurrent: "4.000.000",
+    novo: "100.000/s", proxyUser: "10.000", endpointClient: "20.000",
+    specsCompletas: true
+  },
+  {
+    modelo: "M10000-AC-I", porte: "Data center / Operadora",
+    usuarios: "100.000", netThroughput: "30 Gbps", appThroughput: "20 Gbps",
+    bandwidth: "10 Gbps", ipsecVpn: "—", concurrent: "8.000.000",
+    novo: "200.000/s", proxyUser: "20.000", endpointClient: "20.000",
+    specsCompletas: true
+  }
 ];
 
 /* Rótulos amigáveis das specs, para o time comercial entender */
@@ -173,7 +230,8 @@ const SPEC_LABELS = {
   concurrent: "Conexões simultâneas",
   novo: "Novas conexões",
   proxyUser: "Usuários de proxy",
-  endpointClient: "Clientes de endpoint"
+  endpointClient: "Clientes de endpoint",
+  hardware: "Hardware (resumo)"
 };
 
 /* Números institucionais da Sangfor — reforçam confiança (combate objeção de marca) */

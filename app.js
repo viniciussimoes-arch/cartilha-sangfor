@@ -688,7 +688,7 @@ function viewCatalogo() {
   ${detalhados}
   <div class="callout">
     <b>Como vender sem ser técnico:</b> pergunte <i>"quantas pessoas usam a rede na empresa?"</i> e indique o modelo pela coluna de usuários. As specs técnicas ficam para o pré-vendas técnico — você foca no porte e no valor.
-    <br><br><b>⏳ Faltam specs?</b> Os modelos marcados como "a confirmar" serão preenchidos conforme as specs do portal forem enviadas.
+    <br><br><b>Faixa de porte (regra rápida):</b> até 600 → M5100 · até 3.000 → M5200/M5400 · até 6.000 → M5500/M5600 · grande/DC → M5800/M6000 · data center/operadora → M9000/M10000.
   </div>`;
 }
 
